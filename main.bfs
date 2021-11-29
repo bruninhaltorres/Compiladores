@@ -1,0 +1,81 @@
+#### OPERAÇÕES ####
+
+function num operacao(num _a, num _b){
+    num _d = 5;
+
+    _d += 1;
+    _d++;
+
+    _d -= 1;
+    _d--;
+
+    num _resultado = _a + _b * _d; // Ordem: Multiplica depois soma.
+
+    return _resultado;
+}
+
+function str exemplo(){
+
+}
+
+function main(){
+
+    #### DECLARAÇÃO ####
+
+    num _a, _b;
+    num _c = 5.5;
+
+    bool _TF = True;
+
+    str _String1 = "amor";
+    str _String2 = "dadiva"
+    str _Caracter = 'a';
+    array _Array <num> = [0] // [0, 1, 2, ..., 200]
+
+    #### LEITURA ####
+
+    _a = SysIn()
+    SysIn(_a, _b);
+
+    #### IMPRESSÃO ####
+
+    SysOut(_a);
+    SysOut("Menor que 10. Resultado {_resultado}/n");
+
+    #### CHAMADA DE FUNÇÃO ####
+
+    num _resultado = operacao(_a, _b);
+
+    #### CONDICIONAIS ####
+
+    if (_resultado < 10 && _resultado > 0) {
+        SysOut("Menor que 10. Resultado {_resultado}/n");
+    } elif (_resultado == 10) {
+
+    } else (_resultado > 10 || _resultado > 15) {
+
+    }
+    
+    #### CONCATENAÇÃO ####
+
+    str _resultado = _a ++ _String1
+
+    if (_String1 != _String2) {
+        str _String3 = _String1 ++ ' ' ++ _String2
+    }
+
+    num _i; // _i = 0
+
+    #### LOOPS ####
+
+    for (_i; [0,10] ; 5) { // for (contador; init, finish; incremento) -> Quando não especificado o valor o incremento, deve-se assumir como 1. 
+
+    }
+
+    while (_i > 10){
+        _i++;
+    }
+
+}
+
+
