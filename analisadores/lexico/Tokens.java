@@ -53,4 +53,10 @@ public enum Tokens {
 
     S_VIRG,
     S_PVIRG,
+
+    ERR_ID,
+    ERR_CHAR,
+    ERR_NUM,
+    ERR_PR,
+    ERR_DESC,
 }
