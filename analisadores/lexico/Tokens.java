@@ -1,3 +1,5 @@
+//TODOS OS TOKENS DA LINGUAGEM
+
 package analisadores.lexico;
 
 public enum Tokens {
@@ -24,7 +26,8 @@ public enum Tokens {
     PR_TRUE,
     PR_FALSE,
     BOOL_VALUE,
-
+    
+    UNDER,
     OPR_ADD,
     OPR_SUB,
     OPR_MULT,

@@ -3,12 +3,12 @@ package analisadores.lexico;
 public class TokensClass {
 
     public Tokens category;
-    public String lexeme;
+    public String lexical;
     public int line, column;
 
-    public TokensClass(Tokens category, String lexeme, int line, int column) {
+    public TokensClass(Tokens category, String lexical, int line, int column) {
         this.category = category;
-        this.lexeme = lexeme;
+        this.lexical = lexical;
         this.line = line;
         this.column = column;
     }
@@ -16,7 +16,6 @@ public class TokensClass {
     @Override
     public String toString() {
         String format = " [%04d,%04d] (%04d,%20s) {%s} ";
-        return String.format(format, line - 1, column, category.ordinal(), category, lexeme);
+        return String.format(format, line - 1, column, category.ordinal(), category, lexical);
     }
-
 }
