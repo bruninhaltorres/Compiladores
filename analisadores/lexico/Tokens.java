@@ -39,8 +39,7 @@ public enum Tokens {
     OPR_MAIOR,
     OPR_MENOR,
     OPR_MAIORIG,
-    OPR_INC,
-    OPR_DEC,
+    OPR_CONC,
 
     OPR_MENORIG,
     OPR_AND,
