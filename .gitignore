@@ -1,0 +1,7 @@
+.gitignore
+.project
+.classpath
+analisadores/lexico/HashTablePL.class
+analisadores/lexico/Lexico.class
+analisadores/lexico/Tokens.class
+analisadores/lexico/TokensClass.class
