@@ -6,6 +6,8 @@ public class TokensClass {
     public String lexical;
     public int line, column;
 
+    public TokensClass() { }
+
     public TokensClass(Tokens category, String lexical, int line, int column) {
         this.category = category;
         this.lexical = lexical;
