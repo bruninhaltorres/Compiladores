@@ -1,6 +1,6 @@
 //TODOS OS TOKENS DA LINGUAGEM
 
-package analisadores.lexico;
+package analisadores.lexico.tokens;
 
 public enum Tokens {
 

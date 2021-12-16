@@ -3,6 +3,8 @@ package analisadores.lexico;
 
 import java.util.Hashtable;
 
+import analisadores.lexico.tokens.Tokens;
+
 public class HashTablePL {
     Hashtable<String, Tokens> reservedWord = new Hashtable<>();
 

@@ -1,7 +1,10 @@
 package analisadores.lexico;
-import analisadores.lexico.TokensClass;
 import java.io.BufferedReader;
 import java.io.FileReader;
+
+import analisadores.lexico.tokens.Tokens;
+import analisadores.lexico.tokens.TokensClass;
+import analisadores.lexico.tokens.TokensFile;
 
 public class Lexico {
     private final HashTablePL hashTable = new HashTablePL();
@@ -9,7 +12,7 @@ public class Lexico {
     private char[] content;
     private BufferedReader doc;
     private String currentLine = " "; 
-    public TokensClass myTokens = new TokensClass("token-outputs");
+    // private TokensFile myTokens = new TokensFile("token-outputs");
 
     // TokensClass token;
 
@@ -21,6 +24,7 @@ public class Lexico {
             doc = new BufferedReader(new FileReader(file)); // new BufferedReader(new FileReader(new File(archive))); ???
             nextLine();
             content = currentLine.toCharArray(); // converter a string em um array char.
+            new TokensFile();
         }catch(Exception exception) {
             exception.printStackTrace(); // para auxiliar no encontro do erro.
         }   
@@ -65,6 +69,7 @@ public class Lexico {
                     content = currentLine.toCharArray(); // salva esse linha
                 } else {
                     new TokensClass(Tokens.EOF, "EOF", line, column);
+                    TokensFile.closeFile();
                     return null;
                 }
             }
