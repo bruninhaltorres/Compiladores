@@ -1,7 +1,4 @@
 package analisadores.lexico.tokens;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class TokensClass {
 
@@ -21,7 +18,7 @@ public class TokensClass {
 
     @Override
     public String toString() {
-        String format = " [%04d,%04d] (%04d,%20s) {%s} ";
+        String format = "[%04d,%04d] (%04d,%20s) {%s}\n";
         return String.format(format, line - 1, column, category.ordinal(), category, lexical);
     }
 }
