@@ -28,7 +28,7 @@ public class Lexico {
         }   
     }
 
-    public boolean nextLine(){ // pq a função é booleana?
+    public boolean nextLine(){ // Pega a proxima linha
         String currentLineAux = " ";
         try {
             currentLineAux = doc.readLine();
@@ -65,6 +65,7 @@ public class Lexico {
 
             if(isEOF()){ // se não é EOF, ou seja, não chegou ao final do arquivo
                 // System.out.printf("cheguei ao eof");
+                TokensFile.write("\n");
                 if(nextLine()){ // verifica se a proxima linha não é null. Se não for,
                     content = currentLine.toCharArray(); // salva esse linha
                 } else {
@@ -78,12 +79,13 @@ public class Lexico {
 
             System.out.printf("\n");
             for(int i = 0; i < content.length; i++) {
-                System.out.printf("%c(%d) ",content[i], i);
+                System.out.printf("%c(%d) ", content[i], i);
             }
             System.out.printf("tamanho: %d\n\n", content.length);
             
             switch(state){
                 case 0:
+                    lex = "";
                     if(currentChar == '_'){
                         lex += currentChar;
                         state = 1;
@@ -367,7 +369,7 @@ public class Lexico {
     }
 
     private boolean isEOF() { // retorna true se a posição for do tamanho do array content. 
-        return position == content.length - 1;
+        return position == content.length;
     }
 
     private void back() {
