@@ -31,7 +31,11 @@ public class TokensClass {
     }
 
     public static void writeFile() {
-        
+        try {
+
+        } catch {
+
+        }
     }
 
     @Override
