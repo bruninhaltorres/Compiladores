@@ -49,11 +49,18 @@ public class Lexico {
     }
 
     public TokensClass nextToken() {
-        char currentChar;
+        char currentChar = ' ';
 		String lex = "";
 		state = 0;
+        int teste = 0;
         while(true) {
+            // System.out.printf("!!!%d!!!\t\t\t\n", teste);
+            teste += 1;
+            // System.out.printf("---------------------------\n");
+            // System.out.printf("Entrei no while:\n");
+            // System.out.printf("((%d)) Linha: %d | Coluna: %d | Linha: %s | Caracter: %c\n\n", state, line, column, currentLine, currentChar);
             if(isEOF()){ // se não é EOF, ou seja, não chegou ao final do arquivo
+                // System.out.printf("cheguei ao eof");
                 if(nextLine()){ // verifica se a proxima linha não é null. Se não for,
                     content = currentLine.toCharArray(); // salva esse linha
                 } else {
@@ -148,7 +155,9 @@ public class Lexico {
                 case 3:
                     back();
                     column++;
-                    return new TokensClass(Tokens.ID,lex,line,column);
+                    state = 0;
+                    new TokensClass(Tokens.ID,lex,line,column);
+                break;
                     
             }
         }
