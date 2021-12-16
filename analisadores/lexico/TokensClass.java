@@ -1,40 +1,40 @@
 package analisadores.lexico;
-import java.io.PrintWriter;
-
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class TokensClass {
 
     public Tokens category;
     public String lexical;
     public int line, column;
-    private static File arq = new File("./out/output.txt");
-    // private static PrintWriter gravarArq = new PrintWriter(arq);
-    private static FileWriter myArq = new FileWriter(arq);
+    private static File arq;
+    private static FileWriter myArq;
 
-    public TokensClass() { }
+    public TokensClass(String FileName) {
+        try {
+            String file = FileName;
+            TokensClass.arq = new File(file);
+            TokensClass.arq.createNewFile();
+            TokensClass.myArq = new FileWriter(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public TokensClass(Tokens category, String lexical, int line, int column) {
         this.category = category;
         this.lexical = lexical;
         this.line = line;
         this.column = column;
+        TokensClass.write(this.toString());
     }
 
-    public static void createFile() {
+    public static void write(String str) {
         try {
-            TokensClass.arq.createNewFile();
-        } catch (Exception e) {
+            TokensClass.myArq.write(str);
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void writeFile() {
-        try {
-
-        } catch {
-
         }
     }
 

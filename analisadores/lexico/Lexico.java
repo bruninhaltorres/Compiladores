@@ -1,16 +1,15 @@
 package analisadores.lexico;
-
+import analisadores.lexico.TokensClass;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
 public class Lexico {
-    private final HashTablePL hashTable = new HashTablePL(); // final: É um método que não deixa que a variável seja sobrescrita nas subclasses.
+    private final HashTablePL hashTable = new HashTablePL();
     private int line, column, position, state;
-
-    private char[] content;// guardar a linha caracter por caracter
-    private BufferedReader doc; //nosso programa a ser executado
-
-    private String currentLine = " "; // guarda a linha inteira.
+    private char[] content;
+    private BufferedReader doc;
+    private String currentLine = " "; 
+    public TokensClass myTokens = new TokensClass("token-outputs");
 
     // TokensClass token;
 
@@ -59,15 +58,22 @@ public class Lexico {
             System.out.printf("---------------------------\n");
             System.out.printf("Entrei no while:\n");
             System.out.printf("((%d)) Linha: %d | Coluna: %d | Linha: %s | Caracter: %c\n\n", state, line, column, currentLine, currentChar);
+            System.out.printf("Position::: %d\n\n", position);
             if(isEOF()){ // se não é EOF, ou seja, não chegou ao final do arquivo
                 // System.out.printf("cheguei ao eof");
                 if(nextLine()){ // verifica se a proxima linha não é null. Se não for,
                     content = currentLine.toCharArray(); // salva esse linha
                 } else {
-                    return new TokensClass(Tokens.EOF, "EOF", line, column);
+                    new TokensClass(Tokens.EOF, "EOF", line, column);
+                    return null;
                 }
             }
             currentChar = nextChar();
+            System.out.printf("\n");
+            for(int i = 0; i < content.length; i++) {
+                System.out.printf("%c(%d) ",content[i], i);
+            }
+            System.out.printf("tamanho: %d\n\n", content.length);
             switch(state){
                 case 0:
                     if(currentChar == '_'){
@@ -92,47 +98,47 @@ public class Lexico {
                     } else if(currentChar == '+') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.OPR_ADD,lex,line,column);
+                        new TokensClass(Tokens.OPR_ADD,lex,line,column);
                     } else if(currentChar == '-') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.OPR_SUB,lex,line,column);
+                        new TokensClass(Tokens.OPR_SUB,lex,line,column);
                     } else if(currentChar == '*') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.OPR_MULT,lex,line,column);
+                        new TokensClass(Tokens.OPR_MULT,lex,line,column);
                     } else if(currentChar == '%') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.OPR_MOD,lex,line,column);
+                        new TokensClass(Tokens.OPR_MOD,lex,line,column);
                     } else if(currentChar == '(') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.OP_PAR,lex,line,column);
+                        new TokensClass(Tokens.OP_PAR,lex,line,column);
                     } else if(currentChar == ')') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.CL_PAR,lex,line,column);
+                        new TokensClass(Tokens.CL_PAR,lex,line,column);
                     } else if(currentChar == '[') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.OP_COLC,lex,line,column);
+                        new TokensClass(Tokens.OP_COLC,lex,line,column);
                     } else if(currentChar == ']') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.CL_COLC,lex,line,column);
+                        new TokensClass(Tokens.CL_COLC,lex,line,column);
                     } else if(currentChar == ';') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.S_PVIRG,lex,line,column);
+                        new TokensClass(Tokens.S_PVIRG,lex,line,column);
                     } else if(currentChar == ',') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.S_VIRG,lex,line,column); 
+                        new TokensClass(Tokens.S_VIRG,lex,line,column); 
                     } else if(currentChar == '&') {
                         lex += currentChar;
                         column++;
-                        return new TokensClass(Tokens.OPR_CONC,lex,line,column);
+                        new TokensClass(Tokens.OPR_CONC,lex,line,column);
                     } else {
                         new TokensClass(Tokens.ERR_DESC,lex,line,column);
                     }
@@ -200,11 +206,13 @@ public class Lexico {
                 case 6:
                     back();
                     column++;
-                    return new TokensClass(Tokens.PR_INT,lex,line,column);
+                     new TokensClass(Tokens.PR_INT,lex,line,column);
+                    break;
                 case 7:
                     back();
                     column++;
-                    return new TokensClass(Tokens.PR_FLOAT,lex,line,column);
+                     new TokensClass(Tokens.PR_FLOAT,lex,line,column);
+                     break;
 
                 // OPERADORES
                 case 8:
@@ -216,44 +224,44 @@ public class Lexico {
                         if(currentChar == '=') {
                             lex += currentChar;
                             column++;
-                            return new TokensClass(Tokens.OPR_MAIORIG,lex,line,column);
+                             new TokensClass(Tokens.OPR_MAIORIG,lex,line,column);
                         }else {
                             back();
                             column++;
-                            return new TokensClass(Tokens.OPR_MAIOR,lex,line,column);
+                             new TokensClass(Tokens.OPR_MAIOR,lex,line,column);
                         }
                     }else if(currentChar == '<') {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex += currentChar;
                             column++;
-                            return new TokensClass(Tokens.OPR_MENORIG,lex,line,column);
+                             new TokensClass(Tokens.OPR_MENORIG,lex,line,column);
                         }else {
                             back();
                             column++;
-                            return new TokensClass(Tokens.OPR_MENOR,lex,line,column);
+                             new TokensClass(Tokens.OPR_MENOR,lex,line,column);
                         }
                     }else if(currentChar == '=') {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex+=currentChar;
                             column++;
-                            return new TokensClass(Tokens.OPR_DIGUAL,lex,line,column);
+                             new TokensClass(Tokens.OPR_DIGUAL,lex,line,column);
                         }else {
                             back();
                             column++;
-                            return new TokensClass(Tokens.OPR_IGUAL,lex,line,column);
+                             new TokensClass(Tokens.OPR_IGUAL,lex,line,column);
                         }
                     }else if(currentChar == '!') {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex+=currentChar;
                             column++;
-                            return new TokensClass(Tokens.OPR_DIF,lex,line,column);
+                             new TokensClass(Tokens.OPR_DIF,lex,line,column);
                         }else {
                             back();
                             column++;
-                            return new TokensClass(Tokens.OPR_NOT,lex,line,column);
+                             new TokensClass(Tokens.OPR_NOT,lex,line,column);
                         }
                     }else {
                         column++;
@@ -268,9 +276,9 @@ public class Lexico {
                     } else {
                         lex += currentChar;
                         column++;   
-                        return new TokensClass(Tokens.OPR_DIV,lex,line,column);
+                         new TokensClass(Tokens.OPR_DIV,lex,line,column);
                     }
-                
+                    break;
                 // PALAVRAS RESERVAS:
                 case 10:
                     if(isLetter(currentChar)) {
@@ -285,11 +293,12 @@ public class Lexico {
                     back();
                     if(hashTable.reservedWord.get(lex) != null) {
                         column++;
-                        return new TokensClass(hashTable.reservedWord.get(lex),lex,line,column);
+                         new TokensClass(hashTable.reservedWord.get(lex),lex,line,column);
                     }else {
                         column++;
-                        return new TokensClass(Tokens.ERR_PR,lex,line,column); 
+                         new TokensClass(Tokens.ERR_PR,lex,line,column); 
                     }
+                    break;
             }
         }
     }
@@ -349,7 +358,7 @@ public class Lexico {
     }
 
     private boolean isEOF() { // retorna true se a posição for do tamanho do array content. 
-        return position == content.length;
+        return position == content.length - 1;
     }
 
     private void back() {
