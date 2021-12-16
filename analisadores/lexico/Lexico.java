@@ -12,20 +12,18 @@ public class Lexico {
     private char[] content;
     private BufferedReader doc;
     private String currentLine = " "; 
-    // private TokensFile myTokens = new TokensFile("token-outputs");
 
-    // TokensClass token;
-
-    public Lexico(String file) {
+    public Lexico(String BFSfile) {
         try{
             line = 1;
             column = 1; // vai se referir onde começa os tokens
             position = 0;
-            doc = new BufferedReader(new FileReader(file)); // new BufferedReader(new FileReader(new File(archive))); ???
+            doc = new BufferedReader(new FileReader(BFSfile));//Abre o nosso arquivo BFS
             nextLine();
             content = currentLine.toCharArray(); // converter a string em um array char.
             new TokensFile();
         }catch(Exception exception) {
+            System.out.println("Arquivo não encontrado!");
             exception.printStackTrace(); // para auxiliar no encontro do erro.
         }   
     }
@@ -40,7 +38,7 @@ public class Lexico {
 
         if(currentLineAux != null) {
             currentLine = currentLineAux;
-            System.out.printf("%4d %s %n", line, currentLine);
+            System.out.printf("%d %s \n", line, currentLine);
             currentLine += " "; // apenas por uso visual
             line++;
             position = 0;
@@ -59,26 +57,31 @@ public class Lexico {
         while(true) {
             // System.out.printf("!!!%d!!!\t\t\t\n", teste);
             teste += 1;
+
             System.out.printf("---------------------------\n");
             System.out.printf("Entrei no while:\n");
             System.out.printf("((%d)) Linha: %d | Coluna: %d | Linha: %s | Caracter: %c\n\n", state, line, column, currentLine, currentChar);
             System.out.printf("Position::: %d\n\n", position);
+
             if(isEOF()){ // se não é EOF, ou seja, não chegou ao final do arquivo
                 // System.out.printf("cheguei ao eof");
                 if(nextLine()){ // verifica se a proxima linha não é null. Se não for,
                     content = currentLine.toCharArray(); // salva esse linha
                 } else {
-                    new TokensClass(Tokens.EOF, "EOF", line, column);
+                    TokensFile.write((new TokensClass(Tokens.EOF, "EOF", line, column)).toString());
                     TokensFile.closeFile();
                     return null;
                 }
             }
+
             currentChar = nextChar();
+
             System.out.printf("\n");
             for(int i = 0; i < content.length; i++) {
                 System.out.printf("%c(%d) ",content[i], i);
             }
             System.out.printf("tamanho: %d\n\n", content.length);
+            
             switch(state){
                 case 0:
                     if(currentChar == '_'){
@@ -98,64 +101,60 @@ public class Lexico {
                     } else if(currentChar == '/') {
                         lex += currentChar;
                         state = 9;
-                        // column++;
-                        // return new TokensClass(Tokens.OPR_DIV,lex,line,column);
                     } else if(currentChar == '+') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.OPR_ADD,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.OPR_ADD,lex,line,column).toString()));
                     } else if(currentChar == '-') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.OPR_SUB,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.OPR_SUB,lex,line,column)).toString());
                     } else if(currentChar == '*') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.OPR_MULT,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.OPR_MULT,lex,line,column).toString()));
                     } else if(currentChar == '%') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.OPR_MOD,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.OPR_MOD,lex,line,column).toString()));
                     } else if(currentChar == '(') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.OP_PAR,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.OP_PAR,lex,line,column).toString()));
                     } else if(currentChar == ')') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.CL_PAR,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.CL_PAR,lex,line,column).toString()));
                     } else if(currentChar == '[') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.OP_COLC,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.OP_COLC,lex,line,column).toString()));
                     } else if(currentChar == ']') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.CL_COLC,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.CL_COLC,lex,line,column).toString()));
                     } else if(currentChar == ';') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.S_PVIRG,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.S_PVIRG,lex,line,column).toString()));
                     } else if(currentChar == ',') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.S_VIRG,lex,line,column); 
+                        TokensFile.write((new TokensClass(Tokens.S_VIRG,lex,line,column).toString()));
                     } else if(currentChar == '&') {
                         lex += currentChar;
                         column++;
-                        new TokensClass(Tokens.OPR_CONC,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.OPR_CONC,lex,line,column).toString()));
                     } else {
-                        new TokensClass(Tokens.ERR_DESC,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.ERR_DESC,lex,line,column).toString()));
                     }
                     break;
-                
-                // IDENTIFICADORES
                 case 1:
                     if(isLetter(currentChar)){
                         lex += currentChar;
                         state = 2;
                     } else {
-                        new TokensClass(Tokens.ERR_ID, lex, line, column);
+                        TokensFile.write((new TokensClass(Tokens.ERR_ID,lex,line,column).toString()));
                         System.out.println("erro");
                         // throw new Exception("error message");  
                     }
@@ -168,14 +167,14 @@ public class Lexico {
 					    state = 3;
                     } else {
                         column++;
-                        new TokensClass(Tokens.ERR_ID,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.ERR_ID,lex,line,column).toString()));
                     }
                     break;
                 case 3:
                     back();
                     column++;
                     state = 0;
-                    new TokensClass(Tokens.ID,lex,line,column);
+                    TokensFile.write((new TokensClass(Tokens.ID,lex,line,column).toString()));
                     break;
                 
                 // DIGITOS
@@ -189,9 +188,9 @@ public class Lexico {
                     } else if(!isLetter(currentChar) || !isDigit(currentChar) || isOther(currentChar) || isOperator(currentChar)) { // pode ter uma letra depois do digito?
                         back();
                         state = 6;
-                    } else { // PRA QUE TÁ SERVINDO ESSE ELSE???
+                    } else { // PRA QUE T SERVINDO ESSE ELSE???
                         column++;
-                        new TokensClass(Tokens.ERR_NUM,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.ERR_NUM,lex,line,column).toString()));
                     }
                     break;
                 case 5:
@@ -199,25 +198,27 @@ public class Lexico {
                         lex += currentChar;
                     } else if(currentChar == '.') {
                         column++;
-                        new TokensClass(Tokens.ERR_NUM, lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.ERR_NUM,lex,line,column).toString()));
                     } else if(!isLetter(currentChar) || !isDigit(currentChar) || isOther(currentChar) || isOperator(currentChar)) {
                         back();
                         state = 7;
                     } else {
                         column++;
-                        new TokensClass(Tokens.ERR_NUM, lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.ERR_NUM,lex,line,column).toString()));
                     }
                     break;
                 case 6:
                     back();
                     column++;
-                     new TokensClass(Tokens.PR_INT,lex,line,column);
+                    TokensFile.write((new TokensClass(Tokens.PR_INT,lex,line,column).toString()));
+
                     break;
                 case 7:
                     back();
                     column++;
-                     new TokensClass(Tokens.PR_FLOAT,lex,line,column);
-                     break;
+                    TokensFile.write((new TokensClass(Tokens.PR_FLOAT,lex,line,column).toString()));
+
+                    break;
 
                 // OPERADORES
                 case 8:
@@ -229,62 +230,64 @@ public class Lexico {
                         if(currentChar == '=') {
                             lex += currentChar;
                             column++;
-                             new TokensClass(Tokens.OPR_MAIORIG,lex,line,column);
+                            TokensFile.write((new TokensClass(Tokens.OPR_MAIORIG,lex,line,column).toString()));
+
                         }else {
                             back();
                             column++;
-                             new TokensClass(Tokens.OPR_MAIOR,lex,line,column);
+                            TokensFile.write((new TokensClass(Tokens.OPR_MAIOR,lex,line,column).toString()));
                         }
                     }else if(currentChar == '<') {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex += currentChar;
                             column++;
-                             new TokensClass(Tokens.OPR_MENORIG,lex,line,column);
+                            TokensFile.write((new TokensClass(Tokens.OPR_MENORIG,lex,line,column).toString()));
                         }else {
                             back();
                             column++;
-                             new TokensClass(Tokens.OPR_MENOR,lex,line,column);
+                            TokensFile.write((new TokensClass(Tokens.OPR_MENOR,lex,line,column).toString()));
                         }
                     }else if(currentChar == '=') {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex+=currentChar;
                             column++;
-                             new TokensClass(Tokens.OPR_DIGUAL,lex,line,column);
+                            TokensFile.write((new TokensClass(Tokens.OPR_DIGUAL,lex,line,column).toString()));
                         }else {
                             back();
                             column++;
-                             new TokensClass(Tokens.OPR_IGUAL,lex,line,column);
+                            TokensFile.write((new TokensClass(Tokens.OPR_IGUAL,lex,line,column).toString()));
+
                         }
                     }else if(currentChar == '!') {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex+=currentChar;
                             column++;
-                             new TokensClass(Tokens.OPR_DIF,lex,line,column);
+                            TokensFile.write((new TokensClass(Tokens.OPR_DIF,lex,line,column).toString()));
                         }else {
                             back();
                             column++;
-                             new TokensClass(Tokens.OPR_NOT,lex,line,column);
+                            TokensFile.write((new TokensClass(Tokens.OPR_NOT,lex,line,column).toString()));
                         }
                     }else {
                         column++;
-                        new TokensClass(Tokens.ERR_DESC,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.ERR_DESC,lex,line,column).toString()));
                     }
                     break;
 
-                // COMENTÁRIOS:
+                // COMENTaRIOS:
                 case 9:
                     if(currentChar == '/'){
                         state = 0;
                     } else {
                         lex += currentChar;
                         column++;   
-                         new TokensClass(Tokens.OPR_DIV,lex,line,column);
+                        TokensFile.write((new TokensClass(Tokens.OPR_DIV,lex,line,column).toString()));
                     }
                     break;
-                // PALAVRAS RESERVAS:
+                // PALAVRAS RESERVADAS:
                 case 10:
                     if(isLetter(currentChar)) {
                         lex += currentChar;
@@ -298,10 +301,11 @@ public class Lexico {
                     back();
                     if(hashTable.reservedWord.get(lex) != null) {
                         column++;
-                         new TokensClass(hashTable.reservedWord.get(lex),lex,line,column);
+                        TokensFile.write((new TokensClass(hashTable.reservedWord.get(lex),lex,line,column).toString()));
+
                     }else {
                         column++;
-                         new TokensClass(Tokens.ERR_PR,lex,line,column); 
+                        TokensFile.write((new TokensClass(Tokens.ERR_PR,lex,line,column).toString()));
                     }
                     break;
             }

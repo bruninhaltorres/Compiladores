@@ -1,7 +1,4 @@
 package analisadores.lexico.tokens;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class TokensClass {
 
@@ -16,7 +13,6 @@ public class TokensClass {
         this.lexical = lexical;
         this.line = line;
         this.column = column;
-        TokensFile.write(this.toString());
     }
 
     @Override
