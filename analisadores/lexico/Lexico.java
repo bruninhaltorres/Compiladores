@@ -56,9 +56,9 @@ public class Lexico {
         while(true) {
             // System.out.printf("!!!%d!!!\t\t\t\n", teste);
             teste += 1;
-            // System.out.printf("---------------------------\n");
-            // System.out.printf("Entrei no while:\n");
-            // System.out.printf("((%d)) Linha: %d | Coluna: %d | Linha: %s | Caracter: %c\n\n", state, line, column, currentLine, currentChar);
+            System.out.printf("---------------------------\n");
+            System.out.printf("Entrei no while:\n");
+            System.out.printf("((%d)) Linha: %d | Coluna: %d | Linha: %s | Caracter: %c\n\n", state, line, column, currentLine, currentChar);
             if(isEOF()){ // se não é EOF, ou seja, não chegou ao final do arquivo
                 // System.out.printf("cheguei ao eof");
                 if(nextLine()){ // verifica se a proxima linha não é null. Se não for,
@@ -78,9 +78,17 @@ public class Lexico {
                         state = 4;
                     } else if(isOperator(currentChar)) {
                         lex += currentChar;
-                        state = 7;
+                        state = 8;
+                    } else if(isLetter(currentChar)) {
+                        lex += currentChar;
+                        state = 10;
                     } else if(isOther(currentChar) ) {
                         state = 0;
+                    } else if(currentChar == '/') {
+                        lex += currentChar;
+                        state = 9;
+                        // column++;
+                        // return new TokensClass(Tokens.OPR_DIV,lex,line,column);
                     } else if(currentChar == '+') {
                         lex += currentChar;
                         column++;
@@ -93,10 +101,6 @@ public class Lexico {
                         lex += currentChar;
                         column++;
                         return new TokensClass(Tokens.OPR_MULT,lex,line,column);
-                    } else if(currentChar == '/') {
-                        lex += currentChar;
-                        column++;
-                        return new TokensClass(Tokens.OPR_DIV,lex,line,column);
                     } else if(currentChar == '%') {
                         lex += currentChar;
                         column++;
@@ -133,14 +137,18 @@ public class Lexico {
                         new TokensClass(Tokens.ERR_DESC,lex,line,column);
                     }
                     break;
-
+                
+                // IDENTIFICADORES
                 case 1:
                     if(isLetter(currentChar)){
                         lex += currentChar;
                         state = 2;
                     } else {
                         new TokensClass(Tokens.ERR_ID, lex, line, column);
+                        System.out.println("erro");
+                        // throw new Exception("error message");  
                     }
+                    break;
                 case 2:
                     if(isLetter(currentChar) || isDigit(currentChar)){
                         lex += currentChar;
@@ -157,11 +165,133 @@ public class Lexico {
                     column++;
                     state = 0;
                     new TokensClass(Tokens.ID,lex,line,column);
-                break;
-                    
+                    break;
+                
+                // DIGITOS
+                case 4:
+                    if(isDigit(currentChar)) { // PODE LER QUANTOS NUMEROS QUISER
+                        lex += currentChar;
+                    } else if(currentChar == '.') {
+                        lex += currentChar;
+                        state = 5;
+                        column++;
+                    } else if(!isLetter(currentChar) || !isDigit(currentChar) || isOther(currentChar) || isOperator(currentChar)) { // pode ter uma letra depois do digito?
+                        back();
+                        state = 6;
+                    } else { // PRA QUE TÁ SERVINDO ESSE ELSE???
+                        column++;
+                        new TokensClass(Tokens.ERR_NUM,lex,line,column);
+                    }
+                    break;
+                case 5:
+                    if(isDigit(currentChar)) {
+                        lex += currentChar;
+                    } else if(currentChar == '.') {
+                        column++;
+                        new TokensClass(Tokens.ERR_NUM, lex,line,column);
+                    } else if(!isLetter(currentChar) || !isDigit(currentChar) || isOther(currentChar) || isOperator(currentChar)) {
+                        back();
+                        state = 7;
+                    } else {
+                        column++;
+                        new TokensClass(Tokens.ERR_NUM, lex,line,column);
+                    }
+                    break;
+                case 6:
+                    back();
+                    column++;
+                    return new TokensClass(Tokens.PR_INT,lex,line,column);
+                case 7:
+                    back();
+                    column++;
+                    return new TokensClass(Tokens.PR_FLOAT,lex,line,column);
+
+                // OPERADORES
+                case 8:
+                    back(); //Volta duas vezes para verficar as tuplas dos operadores relacionais
+                    back();
+                    currentChar = nextChar();
+                    if(currentChar == '>') {
+                        currentChar = nextChar();
+                        if(currentChar == '=') {
+                            lex += currentChar;
+                            column++;
+                            return new TokensClass(Tokens.OPR_MAIORIG,lex,line,column);
+                        }else {
+                            back();
+                            column++;
+                            return new TokensClass(Tokens.OPR_MAIOR,lex,line,column);
+                        }
+                    }else if(currentChar == '<') {
+                        currentChar = nextChar();
+                        if(currentChar == '=') {
+                            lex += currentChar;
+                            column++;
+                            return new TokensClass(Tokens.OPR_MENORIG,lex,line,column);
+                        }else {
+                            back();
+                            column++;
+                            return new TokensClass(Tokens.OPR_MENOR,lex,line,column);
+                        }
+                    }else if(currentChar == '=') {
+                        currentChar = nextChar();
+                        if(currentChar == '=') {
+                            lex+=currentChar;
+                            column++;
+                            return new TokensClass(Tokens.OPR_DIGUAL,lex,line,column);
+                        }else {
+                            back();
+                            column++;
+                            return new TokensClass(Tokens.OPR_IGUAL,lex,line,column);
+                        }
+                    }else if(currentChar == '!') {
+                        currentChar = nextChar();
+                        if(currentChar == '=') {
+                            lex+=currentChar;
+                            column++;
+                            return new TokensClass(Tokens.OPR_DIF,lex,line,column);
+                        }else {
+                            back();
+                            column++;
+                            return new TokensClass(Tokens.OPR_NOT,lex,line,column);
+                        }
+                    }else {
+                        column++;
+                        new TokensClass(Tokens.ERR_DESC,lex,line,column);
+                    }
+                    break;
+
+                // COMENTÁRIOS:
+                case 9:
+                    if(currentChar == '/'){
+                        state = 0;
+                    } else {
+                        lex += currentChar;
+                        column++;   
+                        return new TokensClass(Tokens.OPR_DIV,lex,line,column);
+                    }
+                
+                // PALAVRAS RESERVAS:
+                case 10:
+                    if(isLetter(currentChar)) {
+                        lex += currentChar;
+                    } else if(!isLetter(currentChar) || isOther(currentChar)) {
+                        back();
+                        state = 11;
+                    }
+                    break;
+
+                case 11:
+                    back();
+                    if(hashTable.reservedWord.get(lex) != null) {
+                        column++;
+                        return new TokensClass(hashTable.reservedWord.get(lex),lex,line,column);
+                    }else {
+                        column++;
+                        return new TokensClass(Tokens.ERR_PR,lex,line,column); 
+                    }
             }
         }
-        
     }
 
     public Tokens symbolTokens(char character){
