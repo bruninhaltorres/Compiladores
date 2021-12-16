@@ -13,7 +13,6 @@ public class TokensClass {
         this.lexical = lexical;
         this.line = line;
         this.column = column;
-        TokensFile.write(this.toString());
     }
 
     @Override

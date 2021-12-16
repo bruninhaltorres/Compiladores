@@ -25,7 +25,7 @@ public class TokensFile {
 
     public static void write(String str) {
         try {
-            System.out.println("\n\n\n\n\naq("+str+")\n\n\n\n\n");
+            // System.out.println("\n\n\n\n\n("+str+")\n\n\n\n\n");
             TokensFile.myArq.write(str);
         } catch (Exception e) {
             System.out.println("Não foi possível escrever  a string " + str + " no arquivo");
