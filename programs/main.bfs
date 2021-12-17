@@ -1,20 +1,21 @@
 #### OPERAÇÕES ####
 
-function num operacao(num _a, num _b){
-    num _d = 5;
+function int _operacao(int _a, int _b){
+    int _d = 5;
 
-    _d += 1;
-    _d++;
+    _d = _d + 1;
+    _d = _d - 1;
+    _d = _d * 1;
+    _d = _d / 1;
+    _d = _d % 1;
 
-    _d -= 1;
-    _d--;
 
-    num _resultado = _a + _b * _d; // Ordem: Multiplica depois soma.
+    int _resultado = _a + _b * _d; # Ordem: Multiplica depois soma.
 
     return _resultado;
 }
 
-function str exemplo(){
+function string _exemplo(){
 
 }
 
@@ -22,15 +23,18 @@ function main(){
 
     #### DECLARAÇÃO ####
 
-    num _a, _b;
-    num _c = 5.5;
+    int _a, _b;
+    float _c = 5.5;
 
-    bool _TF = True;
+    bool _TF = true;
 
-    str _String1 = "amor";
-    str _String2 = "dadiva"
-    str _Caracter = 'a';
-    array _Array <num> = [0] // [0, 1, 2, ..., 200]
+    string _String1 = "amor";
+    string _String2 = "dadiva";
+    char _Caracter = 'a';
+    array int _nomes;
+    string int;
+    # array _Array <num> = [0] # [0, 1, 2, ..., 200]
+
 
     #### LEITURA ####
 
@@ -40,42 +44,41 @@ function main(){
     #### IMPRESSÃO ####
 
     SysOut(_a);
-    SysOut("Menor que 10. Resultado {_resultado}/n");
+    SysOut("Menor que 10. Resultado" + _resultado + "/n");
 
     #### CHAMADA DE FUNÇÃO ####
 
-    num _resultado = operacao(_a, _b);
+    int _resultado = operacao(_a, _b);
 
     #### CONDICIONAIS ####
 
-    if (_resultado < 10 && _resultado > 0) {
-        SysOut("Menor que 10. Resultado {_resultado}/n");
+    if (_resultado < 10 and _resultado > 0) {
+        SysOut("Menor que 10. Resultado" + _resultado + "/n");
     } elif (_resultado == 10) {
 
-    } else (_resultado > 10 || _resultado > 15) {
+    } else (_resultado > 10 or _resultado > 15) {
 
     }
     
     #### CONCATENAÇÃO ####
 
-    str _resultado = _a ++ _String1
+    string _resultado = _a & _String1
 
     if (_String1 != _String2) {
-        str _String3 = _String1 ++ ' ' ++ _String2
+        string _String3 = _String1 & ' ' & _String2
     }
 
-    num _i; // _i = 0
+    int _i; # _i = 0
 
     #### LOOPS ####
 
-    for (_i; [0,10] ; 5) { // for (contador; init, finish; incremento) -> Quando não especificado o valor o incremento, deve-se assumir como 1. 
+    for (_i; [0,10]; 5) { # for (contador; init, finish; incremento) -> Quando não especificado o valor o incremento, deve-se assumir como 1. 
 
     }
 
     while (_i > 10){
-        _i++;
+        _i = _i + 1;
     }
-
 }
 
 

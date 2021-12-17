@@ -1,0 +1,12 @@
+function int _sum(int _a, int _b) {
+    return _a + _b;
+}
+# Isso é um comentário 
+function main() {
+    int _a, _b;
+    SysIn(_a, _b);
+
+    int _result = _sum(_a, _b);
+
+    SysOut("The result of" + _a + _b + "is" +_result);
+}

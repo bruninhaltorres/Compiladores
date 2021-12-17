@@ -7,6 +7,11 @@ public enum Tokens {
     EOF,
     ID,
 
+    CT_INT,
+    CT_FLOAT,
+    CT_STRING,
+    CT_CHAR,
+
     PR_MAIN,
     PR_FN,
     PR_RETURN,
@@ -25,6 +30,9 @@ public enum Tokens {
     PR_FOR,
     PR_TRUE,
     PR_FALSE,
+    PR_AND,
+    PR_OR,
+    PR_ARRAY,
     BOOL_VALUE,
     
     UNDER,
