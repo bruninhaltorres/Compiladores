@@ -48,7 +48,7 @@ function main(){
 
     #### CHAMADA DE FUNÇÃO ####
 
-    int _resultado = operacao(_a, _b);
+    int _resultado = _operacao(_a, _b);
 
     #### CONDICIONAIS ####
 

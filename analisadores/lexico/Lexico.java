@@ -5,6 +5,7 @@ import java.io.FileReader;
 import analisadores.lexico.tokens.Tokens;
 import analisadores.lexico.tokens.TokensClass;
 import analisadores.lexico.tokens.TokensFile;
+import analisadores.lexico.Symbols;
 
 public class Lexico {
     private final HashTablePL hashTable = new HashTablePL();
@@ -12,6 +13,7 @@ public class Lexico {
     private char[] content;
     private BufferedReader doc;
     private String currentLine = " "; 
+    // private Symbols symbols = new Symbols();
 
     public Lexico(String BFSfile) {
         try{
@@ -38,7 +40,7 @@ public class Lexico {
 
         if(currentLineAux != null) {
             this.currentLine = currentLineAux;
-            System.out.printf("%d %s \n", this.line, this.currentLine);
+            // System.out.printf("%d %s \n", this.line, this.currentLine);
             TokensFile.write(this.line + " " + this.currentLine + "\n");
             this.currentLine += " "; // apenas por uso visual
             this.line++;
@@ -74,16 +76,16 @@ public class Lexico {
                     if(currentChar == '_'){
                         lex += currentChar;
                         state = 1;
-                    } else if(isDigit(currentChar)) {
+                    } else if(Symbols.isDigit(currentChar)) {
                         lex += currentChar;
                         state = 4;
-                    } else if(isOperator(currentChar)) {
+                    } else if(Symbols.isOperator(currentChar)) {
                         lex += currentChar;
                         state = 8;
-                    } else if(isLetter(currentChar)) {
+                    } else if(Symbols.isLetter(currentChar)) {
                         lex += currentChar;
                         state = 10;
-                    } else if(isOther(currentChar) ) {
+                    } else if(Symbols.isOther(currentChar) ) {
                         state = 0;
                     } else if (currentChar == '#') {
                         lex += currentChar;
@@ -158,7 +160,7 @@ public class Lexico {
                     }
                     break;
                 case 1:
-                    if(isLetter(currentChar)){
+                    if(Symbols.isLetter(currentChar)){
                         lex += currentChar;
                         state = 2;
                     } else {
@@ -166,9 +168,9 @@ public class Lexico {
                     }
                     break;
                 case 2:
-                    if(isLetter(currentChar) || isDigit(currentChar)){
+                    if(Symbols.isLetter(currentChar) || Symbols.isDigit(currentChar)){
                         lex += currentChar;
-                    } else if (isOther(currentChar) || isOperator(currentChar) || isSymbol(currentChar) ){
+                    } else if (Symbols.isOther(currentChar) || Symbols.isOperator(currentChar) || Symbols.isSymbol(currentChar) ){
                         back();
 					    state = 3;
                     } else {
@@ -185,13 +187,13 @@ public class Lexico {
                 
                 // DIGITOS
                 case 4:
-                    if(isDigit(currentChar)) { // PODE LER QUANTOS NUMEROS QUISER
+                    if(Symbols.isDigit(currentChar)) { // PODE LER QUANTOS NUMEROS QUISER
                         lex += currentChar;
                     } else if(currentChar == '.') {
                         lex += currentChar;
                         state = 5;
                         column++;
-                    } else if(!isLetter(currentChar) || !isDigit(currentChar) || isOther(currentChar) || isOperator(currentChar)) { // pode ter uma letra depois do digito?
+                    } else if(!Symbols.isLetter(currentChar) || !Symbols.isDigit(currentChar) || Symbols.isOther(currentChar) || Symbols.isOperator(currentChar)) { // pode ter uma letra depois do digito?
                         back();
                         state = 6;
                     } else { // PRA QUE Ta SERVINDO ESSE ELSE???
@@ -200,12 +202,12 @@ public class Lexico {
                     }
                     break;
                 case 5:
-                    if(isDigit(currentChar)) {
+                    if(Symbols.isDigit(currentChar)) {
                         lex += currentChar;
                     } else if(currentChar == '.') {
                         column++;
                         TokensFile.write((new TokensClass(Tokens.ERR_NUM,lex,line,column).toString()));
-                    } else if(!isLetter(currentChar) || !isDigit(currentChar) || isOther(currentChar) || isOperator(currentChar)) {
+                    } else if(!Symbols.isLetter(currentChar) || !Symbols.isDigit(currentChar) || Symbols.isOther(currentChar) || Symbols.isOperator(currentChar)) {
                         back();
                         state = 7;
                     } else {
@@ -286,7 +288,7 @@ public class Lexico {
                             state = 0;
                             TokensFile.write((new TokensClass(Tokens.OPR_NOT,lex,line,column).toString()));
                         }
-                    } else if (lex.equals("|")){
+                    } else if (lex.equals("|")){ // REMOVER ISSO PQ AGR É OR
                         back();
                         column++;
                         state = 0;
@@ -307,9 +309,9 @@ public class Lexico {
 
                 // PALAVRAS RESERVADAS:
                 case 10:
-                    if(isLetter(currentChar)) {
+                    if(Symbols.isLetter(currentChar)) {
                         lex += currentChar;
-                    } else if(!isLetter(currentChar) || isOther(currentChar) || isOperator(currentChar) || isSymbol(currentChar)) {
+                    } else if(!Symbols.isLetter(currentChar) || Symbols.isOther(currentChar) || Symbols.isOperator(currentChar) || Symbols.isSymbol(currentChar)) {
                         back();
                         state = 11;
                     }
@@ -361,29 +363,4 @@ public class Lexico {
     private char nextChar() {
         return content[position++];
     }
-
-    private boolean isDigit(char ch) {
-		return Character.isDigit(ch);
-	}
-
-    private boolean isLetter(char ch) {
-		return Character.isLetter(ch);
-	}
-
-    private boolean isOperator(char ch) {
-        return ch == '>' || ch == '<' || ch == '=' || ch == '!';
-    }
-
-    private boolean isOther(char ch) {
-        return Character.isWhitespace(ch) || ch == '\t' || ch == '\n' || ch == '\r' || ch == '\f' || ch == '\0' || ch == '\b';
-    }
-
-    public boolean isSymbol(char character){
-        return (character == ';' || character == '(' || character == ')' || character == '\'' || character == '\"' || character == '.' ||
-        character == '|' || character == '&' || character == '+' || character == '-' || character == '%' || character == '/' || character == '\\'
-        || character == '{' || character == '}' || character == '[' || character == ']' || character == '^' ||  character == '`' || character == '~'
-        || character == ',');
-       
-    }
-
 }
