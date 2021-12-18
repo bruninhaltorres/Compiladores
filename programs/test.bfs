@@ -1,8 +1,0 @@
-function main () {
-    string _str = "Eu sou uma string";
-    int _kkkk = 3;
-    float _myFloat = 5.2;
-    bool _myBool1 = true;
-    bool _myBool2 = false;
-    char _myChar = '3';
-}
