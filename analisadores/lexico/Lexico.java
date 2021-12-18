@@ -49,7 +49,7 @@ public class Lexico {
         return false;
     }
 
-    public TokensClass generateTokens() {
+    public void generateTokens() {
         char currentChar = ' ';
 		String lex = "";
 		this.state = 0;
@@ -61,7 +61,7 @@ public class Lexico {
                 } else {
                     TokensFile.write((new TokensClass(Tokens.EOF, "EOF", this.line, this.column)).toString());
                     TokensFile.closeFile();
-                    return null;
+                    return;
                 }
             }
 
