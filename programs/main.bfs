@@ -19,7 +19,7 @@ function string _exemplo(){
 
 }
 
-function main(){
+function void main(){
 
     #### DECLARAÇÃO ####
 
