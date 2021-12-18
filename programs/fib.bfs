@@ -6,15 +6,14 @@ function int _fibonacci(int _n) {
     return _fibonacci(_n - 1) + _fibonacci(_n - 2);
 }
 
-function main() {
+function void main() {
     
     int _n, _total;
     SysOut("Digite o tamanho da sequencia:");
     SysIn(_n);
 
-    int _i = 0;
-
-    for( _i; [0,_n]; 1) {
+    int _i;
+    for(_i = 0, _i < n) {
         _total = _fibonacci(_i);
         SysOut(_total);
     }
