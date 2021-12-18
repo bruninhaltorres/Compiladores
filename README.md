@@ -28,6 +28,8 @@ Para executar o analisador léxico, basta executar os seguintes passos:
 
 # Alunos:
 Bruna Leal Torres Silva
+
 Eirene de Oliveira Fireman
+
 Samuel Lucas Vieira Lins Barbosa
 
