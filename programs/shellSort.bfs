@@ -29,7 +29,7 @@ function void main() {
     SysIn(_n);
 
     array int _valores[_n];
-    SysIn("Insira os valores do array:");
+    SysOut("Insira os valores do array:");
 
     int _i;
     for(_i = 0, _i < _n) {
