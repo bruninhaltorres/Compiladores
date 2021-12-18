@@ -3,8 +3,7 @@ Repositório para a disciplina de Compiladores onde se encontram as especificaç
 
 Programa compilado em openJDK11.0.10.
 
-# Analisador Léxico + Sintatico
-
+# Analisador Léxico
 Para executar o analisador léxico, basta executar os seguintes passos: 
 
 1. Possuir o **Java JDK 11** instalado. Caso não tenha:
@@ -13,13 +12,13 @@ Para executar o analisador léxico, basta executar os seguintes passos:
     
     `` sudo apt install openjdk-11-jdk-headless ``
     
-2. Clonar o repositório aonde lhe for mais cômodo
+2. Clonar o repositório onde lhe for mais cômodo
 
-3. Abrir o terminal no diretório ``Compilacadores``
+3. Abrir o terminal no diretório ``Compiladores``
 
-**Precisa ser no Diretório Complicadores**
+**Precisa ser no Diretório Compiladores**
 
-4. Para executar o analisador é recomendável recompilar o Main.java para sua máquina e SO específico, utilizando o comando:
+4. Para executar o analisador é necessário compilar o Main.java utilizando o comando:
 
 ``javac Main.java`` 
 
