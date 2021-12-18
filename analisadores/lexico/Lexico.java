@@ -13,13 +13,13 @@ public class Lexico {
     private BufferedReader doc;
     private String currentLine = " "; 
 
-    public Lexico(String BFSfile) {
+    public Lexico(String BFSfile, String outputFile) {
         try{
             this.line = 1;
             this.column = 1;
             this.position = 0;
-            this.doc = new BufferedReader(new FileReader(BFSfile));
-            new TokensFile();
+            this.doc = new BufferedReader(new FileReader("./programs/" + BFSfile));
+            new TokensFile(outputFile);
             nextLine();
             this.content = this.currentLine.toCharArray();
         }catch(Exception exception) {

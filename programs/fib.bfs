@@ -13,7 +13,7 @@ function void main() {
     SysIn(_n);
 
     int _i;
-    for(_i = 0, _i < n) {
+    for(_i = 0, _i < _n) {
         _total = _fibonacci(_i);
         SysOut(_total);
     }
