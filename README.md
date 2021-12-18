@@ -24,7 +24,9 @@ Para executar o analisador léxico, basta executar os seguintes passos:
 
 5. Para executar com o *.bfs* basta digitar o seguinte comando:
 
-``java Main fib.bfs`` (*ou qualquer outro arquivo .bfs*)
+``java Main <arquivo .bfs> <arquivo de saida>``
+
+Os arquivos .bfs devem estar na pasta programs e o arquivo de saida estará na pasta resultados.
 
 # Alunos:
 Bruna Leal Torres Silva
