@@ -72,8 +72,8 @@ function main(){
 
     #### LOOPS ####
 
-    for (_i; [0,10]; 5) { # for (contador; init, finish; incremento) -> Quando não especificado o valor o incremento, deve-se assumir como 1. 
-
+    for (_i = 5 , i < 10) { # O valor o incremento, deve-se assumir como 1. 
+    
     }
 
     while (_i > 10){
