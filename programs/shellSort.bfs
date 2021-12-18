@@ -1,0 +1,50 @@
+function void _shellSort(array int _nums, int _numsSize) {
+    int _h = 1;
+
+    while (_h < _numsSize) {
+        _h = _h * 3 + 1;
+    }
+
+    _h = _h / 3;
+    int _c, _j, _i;
+
+    while (_h > 0) {
+        for(_i = _h, _i < _numsSize) {
+            _c = _nums[_i];
+            _j = _i;
+            while (_j >= _h and _nums[_j - _h] > _c) {
+                _nums[_j] = _nums[_j - _h];
+                _j = _j - _h;
+            }
+            _nums[_j] = _c;
+        }
+        _h = _h / 2;
+    }
+}
+
+function void main() {
+    int _n;
+
+    SysOut("Insira o tamanho do array:");
+    SysIn(_n);
+
+    array int _valores[_n];
+    SysIn("Insira os valores do array:");
+
+    int _i;
+    for(_i = 0, _i < _n) {
+        SysIn(_valores[_i]);
+    }
+
+    SysOut("Array antes de organizar:");
+    for (_i = 0, _i < _n) {
+        SysOut(_valores[_i]);
+    }
+
+    _shellSort(_valores, _n);
+
+    SysOut("Array depois de organizar:");
+    for (_i = 0, _i < _n) {
+        SysOut(_valores[_i]);
+    }
+}
