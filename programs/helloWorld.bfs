@@ -1,5 +1,5 @@
-function main() {
+function void main() {
 
-    SysOut("Hello World!");
+    SysOut("Alô Mundo.");
 
 }
