@@ -1,7 +1,7 @@
 function int _fibonacci(int _n) {
     if( _n < 2 ) {
-        return 
-;    }
+        return _n;    
+    }
 
     return _fibonacci(_n - 1) + _fibonacci(_n - 2);
 }
@@ -16,6 +16,6 @@ function main() {
 
     for( _i; [0,_n]; 1) {
         _total = _fibonacci(_i);
-        SysOut("_total);
+        SysOut(_total);
     }
 }
