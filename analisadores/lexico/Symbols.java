@@ -1,7 +1,5 @@
 package analisadores.lexico;
 
-import java.util.ArrayList;
-
 public class Symbols {
     private static int i;
     private static char[] symbols = {
