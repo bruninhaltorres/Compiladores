@@ -278,11 +278,6 @@ public class Lexico {
                             this.state = 0;
                             TokensFile.write((new TokensClass(Tokens.OPR_NOT,lex,this.line,this.column).toString()));
                         }
-                    } else if (lex.equals("|")){ // REMOVER ISSO PQ AGR É OR
-                        back();
-                        this.column++;
-                        this.state = 0;
-                        TokensFile.write((new TokensClass(Tokens.OPR_OR,lex,this.line,this.column).toString()));
                     } else {
                         this.column++;
                         this.state = 0;
