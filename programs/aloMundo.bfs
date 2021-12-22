@@ -1,4 +1,4 @@
-function void main() {
+function main() {
 
     SysOut("Alô Mundo.");
 

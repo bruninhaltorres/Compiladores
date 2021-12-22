@@ -27,8 +27,10 @@ public class HashTablePL {
 		reservedWord.put("for",Tokens.PR_FOR);
 		reservedWord.put("true",Tokens.PR_TRUE);
 		reservedWord.put("false",Tokens.PR_FALSE);
-		reservedWord.put("and",Tokens.PR_AND);
-		reservedWord.put("or",Tokens.PR_OR);
 		reservedWord.put("array",Tokens.PR_ARRAY);
+		reservedWord.put("break",Tokens.PR_BREAK);
+		reservedWord.put("and",Tokens.OPR_AND);
+		reservedWord.put("or",Tokens.OPR_OR);
+		reservedWord.put("not",Tokens.OPR_NOT);
 	}
 }

@@ -6,15 +6,19 @@ function int _fibonacci(int _n) {
     return _fibonacci(_n - 1) + _fibonacci(_n - 2);
 }
 
-function void main() {
+function main() {
     
     int _n, _total;
-    SysOut("Digite o tamanho da sequencia:");
+    SysOut("Digite o número limite desejado");
     SysIn(_n);
 
     int _i;
-    for(_i = 0, _i < _n) {
+    for(_i = 0, _n) {
         _total = _fibonacci(_i);
-        SysOut(_total);
+        if(_i == _n - 1) {
+            SysOut(_total);
+        } else {
+            SysOut(_total + ", ");
+        }
     }
 }

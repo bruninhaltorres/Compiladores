@@ -9,7 +9,7 @@ function void _shellSort(array int _nums, int _numsSize) {
     int _c, _j, _i;
 
     while (_h > 0) {
-        for(_i = _h, _i < _numsSize) {
+        for(_i = _h, _numsSize) {
             _c = _nums[_i];
             _j = _i;
             while (_j >= _h and _nums[_j - _h] > _c) {
@@ -22,7 +22,7 @@ function void _shellSort(array int _nums, int _numsSize) {
     }
 }
 
-function void main() {
+function main() {
     int _n;
 
     SysOut("Insira o tamanho do array:");
@@ -32,19 +32,19 @@ function void main() {
     SysOut("Insira os valores do array:");
 
     int _i;
-    for(_i = 0, _i < _n) {
+    for(_i = 0, _n) {
         SysIn(_valores[_i]);
     }
 
     SysOut("Array antes de organizar:");
-    for (_i = 0, _i < _n) {
+    for (_i = 0, _n) {
         SysOut(_valores[_i]);
     }
 
     _shellSort(_valores, _n);
 
     SysOut("Array depois de organizar:");
-    for (_i = 0, _i < _n) {
+    for (_i = 0, _n) {
         SysOut(_valores[_i]);
     }
 }

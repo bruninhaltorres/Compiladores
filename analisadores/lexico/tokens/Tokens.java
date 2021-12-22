@@ -30,9 +30,8 @@ public enum Tokens {
     PR_FOR,
     PR_TRUE,
     PR_FALSE,
-    PR_AND,
-    PR_OR,
     PR_ARRAY,
+    PR_BREAK,
     BOOL_VALUE,
     
     UNDER,
@@ -48,8 +47,9 @@ public enum Tokens {
     OPR_MENOR,
     OPR_MAIORIG,
     OPR_CONC,
-
     OPR_MENORIG,
+    OPR_INVERS,
+    
     OPR_AND,
     OPR_OR,
     OPR_NOT,

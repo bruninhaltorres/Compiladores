@@ -65,7 +65,7 @@ public class Lexico {
                 }
             }
 
-            currentChar = nextChar();
+            currentChar = nextChar();     
 
             switch(this.state){
                 case 0:
@@ -109,7 +109,7 @@ public class Lexico {
                         this.column++;
                         TokensFile.write((new TokensClass(Tokens.OPR_MOD,lex,this.line,this.column).toString()));
                     } else if(currentChar == '(') {
-                        lex += currentChar;
+                        lex += currentChar;￼
                         this.column++;
                         TokensFile.write((new TokensClass(Tokens.OP_PAR,lex,this.line,this.column).toString()));
                     } else if(currentChar == ')') {
@@ -144,6 +144,10 @@ public class Lexico {
                         lex += currentChar;
                         this.column++;
                         TokensFile.write((new TokensClass(Tokens.OPR_CONC,lex,this.line,this.column).toString()));
+                    } else if (currentChar == '~') {
+                        lex += currentChar;
+                        this.column++;
+                        TokensFile.write((new TokensClass(Tokens.OPR_INVERS,lex,this.line,this.column).toString()));
                     } else if(currentChar == '"') {
                         lex += currentChar;
                         this.column++;
@@ -272,11 +276,11 @@ public class Lexico {
                             this.column++;
                             this.state = 0;
                             TokensFile.write((new TokensClass(Tokens.OPR_DIF,lex,this.line,this.column).toString()));
-                        }else {
+                        } else {
                             back();
                             this.column++;
                             this.state = 0;
-                            TokensFile.write((new TokensClass(Tokens.OPR_NOT,lex,this.line,this.column).toString()));
+                            TokensFile.write((new TokensClass(Tokens.ERR_DESC,lex,this.line,this.column).toString()));
                         }
                     } else {
                         this.column++;
@@ -289,6 +293,7 @@ public class Lexico {
                     this.position = this.currentLine.length();
                     this.state = 0;
                     break;
+
                 case 10:
                     if(Symbols.isLetter(currentChar)) {
                         lex += currentChar;
