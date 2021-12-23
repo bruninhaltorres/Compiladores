@@ -66,6 +66,7 @@ public class Lexico {
             }
 
             currentChar = nextChar();     
+            
 
             switch(this.state){
                 case 0:
@@ -109,7 +110,7 @@ public class Lexico {
                         this.column++;
                         TokensFile.write((new TokensClass(Tokens.OPR_MOD,lex,this.line,this.column).toString()));
                     } else if(currentChar == '(') {
-                        lex += currentChar;￼
+                        lex += currentChar;
                         this.column++;
                         TokensFile.write((new TokensClass(Tokens.OP_PAR,lex,this.line,this.column).toString()));
                     } else if(currentChar == ')') {
