@@ -39,7 +39,8 @@ public class Lexico {
 
         if(currentLineAux != null) {
             this.currentLine = currentLineAux;
-            TokensFile.write(this.line + " " + this.currentLine + "\n");
+            String lineFormat = "%04d  ";
+            TokensFile.write(String.format(lineFormat, this.line) + " " + this.currentLine + "\n");
             this.currentLine += " ";
             this.line++;
             this.position = 0;
