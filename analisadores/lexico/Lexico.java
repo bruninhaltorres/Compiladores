@@ -8,7 +8,7 @@ import analisadores.lexico.tokens.TokensFile;
 
 public class Lexico {
     private final HashTablePL hashTable = new HashTablePL();
-    private int line, column, position, state;
+    private int line, column, position, state, currentColumn;
     private char[] content;
     private BufferedReader doc;
     private String currentLine = " "; 
@@ -17,6 +17,7 @@ public class Lexico {
         try{
             this.line = 1;
             this.column = 1;
+            this.currentColumn = 0;
             this.position = 0;
             this.doc = new BufferedReader(new FileReader("./programs/" + BFSfile));
             new TokensFile(outputFile);
@@ -58,6 +59,7 @@ public class Lexico {
             if(isEOF()){ 
                 if(nextLine()){
                     this.content = this.currentLine.toCharArray();
+                    this.currentColumn = 0;
                 } else {
                     TokensFile.write((new TokensClass(Tokens.EOF, "EOF", this.line, this.column)).toString());
                     TokensFile.closeFile();
@@ -65,11 +67,12 @@ public class Lexico {
                 }
             }
 
-            currentChar = nextChar();     
-            
+            currentChar = nextChar();
+            this.currentColumn++;    
 
             switch(this.state){
                 case 0:
+                    this.column = this.currentColumn;
                     lex = "";
                     if(currentChar == '_'){
                         lex += currentChar;
@@ -87,75 +90,75 @@ public class Lexico {
                         this.state = 0;
                     } else if (currentChar == '#') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         this.state = 9;
                     } else if(currentChar == '/') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.OPR_DIV,lex,this.line,this.column).toString()));
                     } else if(currentChar == '+') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.OPR_ADD,lex,this.line,this.column).toString()));
                     } else if(currentChar == '-') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.OPR_SUB,lex,this.line,this.column)).toString());
                     } else if(currentChar == '*') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.OPR_MULT,lex,this.line,this.column).toString()));
                     } else if(currentChar == '%') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.OPR_MOD,lex,this.line,this.column).toString()));
                     } else if(currentChar == '(') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.OP_PAR,lex,this.line,this.column).toString()));
                     } else if(currentChar == ')') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.CL_PAR,lex,this.line,this.column).toString()));
                     } else if(currentChar == '{') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.OP_CHAVES,lex,this.line,this.column).toString()));
                     } else if(currentChar == '}') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.CL_CHAVES,lex,this.line,this.column).toString()));
                     } else if(currentChar == '[') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.OP_COLC,lex,this.line,this.column).toString()));
                     } else if(currentChar == ']') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.CL_COLC,lex,this.line,this.column).toString()));
                     } else if(currentChar == ';') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.S_PVIRG,lex,this.line,this.column).toString()));
                     } else if(currentChar == ',') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.S_VIRG,lex,this.line,this.column).toString()));
                     } else if(currentChar == '&') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.OPR_CONC,lex,this.line,this.column).toString()));
                     } else if (currentChar == '~') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.OPR_INVERS,lex,this.line,this.column).toString()));
                     } else if(currentChar == '"') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         this.state = 12;
                     } else if (currentChar == '\'') {
                         lex += currentChar;
-                        this.column++;
+                        //this.column++;
                         this.state = 13;
                     } else {
                         TokensFile.write((new TokensClass(Tokens.ERR_DESC,lex,this.line,this.column).toString()));
@@ -176,13 +179,13 @@ public class Lexico {
                         back();
 					    this.state = 3;
                     } else {
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.ERR_ID,lex,this.line,this.column).toString()));
                     }
                     break;
                 case 3:
                     back();
-                    this.column++;
+                    //this.column++;
                     this.state = 0;
                     TokensFile.write((new TokensClass(Tokens.ID,lex,this.line,this.column).toString()));
                     break;
@@ -192,12 +195,12 @@ public class Lexico {
                     } else if(currentChar == '.') {
                         lex += currentChar;
                         this.state = 5;
-                        this.column++;
+                        //this.column++;
                     } else if(!Symbols.isLetter(currentChar) || !Symbols.isDigit(currentChar) || Symbols.isOther(currentChar) || Symbols.isOperator(currentChar)) { // pode ter uma letra depois do digito?
                         back();
                         this.state = 6;
                     } else {
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.ERR_NUM,lex,this.line,this.column).toString()));
                     }
                     break;
@@ -205,25 +208,25 @@ public class Lexico {
                     if(Symbols.isDigit(currentChar)) {
                         lex += currentChar;
                     } else if(currentChar == '.') {
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.ERR_NUM,lex,this.line,this.column).toString()));
                     } else if(!Symbols.isLetter(currentChar) || !Symbols.isDigit(currentChar) || Symbols.isOther(currentChar) || Symbols.isOperator(currentChar)) {
                         back();
                         this.state = 7;
                     } else {
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.ERR_NUM,lex,this.line,this.column).toString()));
                     }
                     break;
                 case 6:
                     back();
-                    this.column++;
+                    //this.column++;
                     this.state = 0;
                     TokensFile.write((new TokensClass(Tokens.CT_INT,lex,this.line,this.column).toString()));
                     break;
                 case 7:
                     back();
-                    this.column++;
+                    //this.column++;
                     this.state = 0;
                     TokensFile.write((new TokensClass(Tokens.CT_FLOAT,lex,this.line,this.column).toString()));
                     break;
@@ -235,12 +238,12 @@ public class Lexico {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex += currentChar;
-                            this.column++;
+                            //this.column++;
                             this.state = 0;
                             TokensFile.write((new TokensClass(Tokens.OPR_MAIORIG,lex,this.line,this.column).toString()));
                         }else {
                             back();
-                            this.column++;
+                            //this.column++;
                             this.state = 0;
                             TokensFile.write((new TokensClass(Tokens.OPR_MAIOR,lex,this.line,this.column).toString()));
                         }
@@ -248,12 +251,12 @@ public class Lexico {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex += currentChar;
-                            this.column++;
+                            //this.column++;
                             this.state = 0;
                             TokensFile.write((new TokensClass(Tokens.OPR_MENORIG,lex,this.line,this.column).toString()));
                         } else {
                             back();
-                            this.column++;
+                            //this.column++;
                             this.state = 0;
                             TokensFile.write((new TokensClass(Tokens.OPR_MENOR,lex,this.line,this.column).toString()));
                         }
@@ -261,12 +264,12 @@ public class Lexico {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex+=currentChar;
-                            this.column++;
+                            //this.column++;
                             this.state = 0;
                             TokensFile.write((new TokensClass(Tokens.OPR_DIGUAL,lex,this.line,this.column).toString()));
                         } else {
                             back();
-                            this.column++;
+                            //this.column++;
                             this.state = 0;
                             TokensFile.write((new TokensClass(Tokens.OPR_IGUAL,lex,this.line,this.column).toString()));
                         }
@@ -274,17 +277,17 @@ public class Lexico {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex+=currentChar;
-                            this.column++;
+                            //this.column++;
                             this.state = 0;
                             TokensFile.write((new TokensClass(Tokens.OPR_DIF,lex,this.line,this.column).toString()));
                         } else {
                             back();
-                            this.column++;
+                            //this.column++;
                             this.state = 0;
                             TokensFile.write((new TokensClass(Tokens.ERR_DESC,lex,this.line,this.column).toString()));
                         }
                     } else {
-                        this.column++;
+                        //this.column++;
                         this.state = 0;
                         TokensFile.write((new TokensClass(Tokens.ERR_DESC,lex,this.line,this.column).toString()));
                     }
@@ -307,11 +310,11 @@ public class Lexico {
                 case 11:
                     back();
                     if(this.hashTable.reservedWord.get(lex) != null) {
-                        this.column++;
+                        //this.column++;
                         this.state = 0;
                         TokensFile.write((new TokensClass(this.hashTable.reservedWord.get(lex),lex,this.line,this.column).toString()));
                     }else {
-                        this.column++;
+                        //this.column++;
                         TokensFile.write((new TokensClass(Tokens.ERR_PR,lex,this.line,this.column).toString()));
                     }
                     break;
@@ -320,8 +323,9 @@ public class Lexico {
                     while(currentChar != '"') {
                         currentChar = nextChar();
                         lex += currentChar;
+                        this.currentColumn++;
                     } 
-                    this.column++;
+                    //this.column++;
                     this.state = 0;
                     TokensFile.write((new TokensClass(Tokens.CT_STRING,lex,this.line,this.column).toString()));
                     break;
@@ -331,7 +335,7 @@ public class Lexico {
                         currentChar = nextChar();
                         lex += currentChar;
                     } 
-                    this.column++;
+                    //this.column++;
                     this.state = 0;
                     TokensFile.write((new TokensClass(Tokens.CT_CHAR,lex,this.line,this.column).toString()));
                     break;
@@ -345,6 +349,7 @@ public class Lexico {
 
     private void back() {
         this.position--;
+        this.currentColumn--;
     }
 
     private char nextChar() {
