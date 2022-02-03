@@ -7,10 +7,10 @@ import java.io.IOException;
 public class TokensFile {
     private static File arq;
     private static FileWriter myArq;
-    private String file;
+    private static String file;
 
-    public TokensFile(String fileName) {
-        this.file = "./resultados/" + fileName;
+    public static void createFile(String fileName) {
+        file = "./resultados/" + fileName;
 
         try {
             TokensFile.arq = new File(file);

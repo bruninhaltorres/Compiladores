@@ -1,359 +1,478 @@
 package analisadores.lexico;
-import java.io.BufferedReader;
-import java.io.FileReader;
-
 import analisadores.lexico.tokens.Tokens;
 import analisadores.lexico.tokens.TokensClass;
 import analisadores.lexico.tokens.TokensFile;
+import analisadores.lexico.tokens.TokensUtils;
 
 public class Lexico {
     private final HashTablePL hashTable = new HashTablePL();
-    private int line, column, position, state, currentColumn;
-    private char[] content;
-    private BufferedReader doc;
-    private String currentLine = " "; 
 
-    public Lexico(String BFSfile, String outputFile) {
-        try{
-            this.line = 1;
-            this.column = 1;
-            this.currentColumn = 0;
-            this.position = 0;
-            this.doc = new BufferedReader(new FileReader("./programs/" + BFSfile));
-            new TokensFile(outputFile);
-            nextLine();
-            this.content = this.currentLine.toCharArray();
-        }catch(Exception exception) {
-            System.out.println("Arquivo não encontrado!");
-            exception.printStackTrace();
-        }   
+    public Lexico() {
     }
 
-    public boolean nextLine(){
-        String currentLineAux = " ";
-        try {
-            currentLineAux = this.doc.readLine();
-        }catch(Exception exception) {
-            exception.printStackTrace();
-        }
-
-        if(currentLineAux != null) {
-            this.currentLine = currentLineAux;
-            String lineFormat = "%04d  ";
-            TokensFile.write(String.format(lineFormat, this.line) + " " + this.currentLine + "\n");
-            this.currentLine += " ";
-            this.line++;
-            this.position = 0;
-            this.column = 0;
-
-            return true;
-        }
-        return false;
-    }
-
-    public void generateTokens() {
-        char currentChar = ' ';
+    public TokensClass nextToken(char[] line, TokensUtils coordinates, int column) {
+        char currentChar;
 		String lex = "";
-		this.state = 0;
+		int state = 0;
+
         while(true) {
+            currentChar = line[column];
+            System.out.printf("%c", currentChar);
+            System.out.println(" column = " + column);
 
-            if(isEOF()){ 
-                if(nextLine()){
-                    this.content = this.currentLine.toCharArray();
-                    this.currentColumn = 0;
-                } else {
-                    TokensFile.write((new TokensClass(Tokens.EOF, "EOF", this.line, this.column)).toString());
-                    TokensFile.closeFile();
-                    return;
-                }
-            }
-
-            currentChar = nextChar();
-            this.currentColumn++;    
-
-            switch(this.state){
+            switch(state){
                 case 0:
-                    this.column = this.currentColumn;
                     lex = "";
                     if(currentChar == '_'){
                         lex += currentChar;
-                        this.state = 1;
+                    column++;
+                        state = 1;
                     } else if(Symbols.isDigit(currentChar)) {
                         lex += currentChar;
-                        this.state = 4;
+                    column++;
+                        state = 4;
                     } else if(Symbols.isOperator(currentChar)) {
                         lex += currentChar;
-                        this.state = 8;
+                    column++;
+                        state = 8;
                     } else if(Symbols.isLetter(currentChar)) {
                         lex += currentChar;
-                        this.state = 10;
+                    column++;
+                        state = 10;
+                        // System.out.println("aq, state = " + state);
                     } else if(Symbols.isOther(currentChar) ) {
-                        this.state = 0;
+                        state = 0;
                     } else if (currentChar == '#') {
                         lex += currentChar;
-                        //this.column++;
-                        this.state = 9;
+                    column++;
+                        state = 9;
                     } else if(currentChar == '/') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.OPR_DIV,lex,this.line,this.column).toString()));
+                    column++;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return new TokensClass(Tokens.OPR_DIV,lex,coordinates.getLine(),coordinates.getStartColumn());
                     } else if(currentChar == '+') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.OPR_ADD,lex,this.line,this.column).toString()));
+                    column++;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_ADD,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == '-') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.OPR_SUB,lex,this.line,this.column)).toString());
+                    column++;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_SUB,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == '*') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.OPR_MULT,lex,this.line,this.column).toString()));
+                    column++;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_MULT,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == '%') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.OPR_MOD,lex,this.line,this.column).toString()));
+                    column++;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_MOD,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == '(') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.OP_PAR,lex,this.line,this.column).toString()));
+                    column++;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OP_PAR,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == ')') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.CL_PAR,lex,this.line,this.column).toString()));
+                    column++;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.CL_PAR,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == '{') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.OP_CHAVES,lex,this.line,this.column).toString()));
+                    column++;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OP_CHAVES,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == '}') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.CL_CHAVES,lex,this.line,this.column).toString()));
+                    column++;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.CL_CHAVES,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == '[') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.OP_COLC,lex,this.line,this.column).toString()));
+                    column++;
+
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OP_COLC,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == ']') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.CL_COLC,lex,this.line,this.column).toString()));
+                    column++;
+
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.CL_COLC,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == ';') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.S_PVIRG,lex,this.line,this.column).toString()));
+                    column++;
+
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.S_PVIRG,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == ',') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.S_VIRG,lex,this.line,this.column).toString()));
+                    column++;
+
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.S_VIRG,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == '&') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.OPR_CONC,lex,this.line,this.column).toString()));
+                    column++;
+
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_CONC,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if (currentChar == '~') {
                         lex += currentChar;
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.OPR_INVERS,lex,this.line,this.column).toString()));
+                    column++;
+
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_INVERS,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(currentChar == '"') {
                         lex += currentChar;
-                        //this.column++;
-                        this.state = 12;
+                    column++;
+
+                        state = 12;
                     } else if (currentChar == '\'') {
                         lex += currentChar;
-                        //this.column++;
-                        this.state = 13;
+                    column++;
+
+                        state = 13;
                     } else {
-                        TokensFile.write((new TokensClass(Tokens.ERR_DESC,lex,this.line,this.column).toString()));
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.ERR_DESC,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     }
                     break;
                 case 1:
                     if(Symbols.isLetter(currentChar)){
                         lex += currentChar;
-                        this.state = 2;
+                    column++;
+                        state = 2;
                     } else {
-                        TokensFile.write((new TokensClass(Tokens.ERR_ID,lex,this.line,this.column).toString()));
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.ERR_ID,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     }
                     break;
                 case 2:
                     if(Symbols.isLetter(currentChar) || Symbols.isDigit(currentChar)){
                         lex += currentChar;
+                    column++;
                     } else if (Symbols.isOther(currentChar) || Symbols.isOperator(currentChar) || Symbols.isSymbol(currentChar) ){
-                        back();
-					    this.state = 3;
+                        // back();
+					    state = 3;
                     } else {
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.ERR_ID,lex,this.line,this.column).toString()));
+
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.ERR_ID,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     }
                     break;
                 case 3:
-                    back();
-                    //this.column++;
-                    this.state = 0;
-                    TokensFile.write((new TokensClass(Tokens.ID,lex,this.line,this.column).toString()));
-                    break;
+                    // back();
+                    state = 0;
+                        coordinates.setEndColumn(column);
+                    System.out.println("TERMINEI O TOKEN");
+                    System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.ID,lex,coordinates.getLine(),coordinates.getStartColumn())));
                 case 4:
                     if(Symbols.isDigit(currentChar)) {
                         lex += currentChar;
+                    column++;
                     } else if(currentChar == '.') {
                         lex += currentChar;
-                        this.state = 5;
-                        //this.column++;
+                    column++;
+                        state = 5;
+
                     } else if(!Symbols.isLetter(currentChar) || !Symbols.isDigit(currentChar) || Symbols.isOther(currentChar) || Symbols.isOperator(currentChar)) { // pode ter uma letra depois do digito?
-                        back();
-                        this.state = 6;
+                        // back();
+                        state = 6;
                     } else {
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.ERR_NUM,lex,this.line,this.column).toString()));
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.ERR_NUM,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     }
-                    break;
+                    
                 case 5:
                     if(Symbols.isDigit(currentChar)) {
                         lex += currentChar;
+                    column++;
                     } else if(currentChar == '.') {
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.ERR_NUM,lex,this.line,this.column).toString()));
+
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.ERR_NUM,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     } else if(!Symbols.isLetter(currentChar) || !Symbols.isDigit(currentChar) || Symbols.isOther(currentChar) || Symbols.isOperator(currentChar)) {
-                        back();
-                        this.state = 7;
+                        // back();
+                        state = 7;
                     } else {
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.ERR_NUM,lex,this.line,this.column).toString()));
+
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.ERR_NUM,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     }
-                    break;
+                    
                 case 6:
-                    back();
-                    //this.column++;
-                    this.state = 0;
-                    TokensFile.write((new TokensClass(Tokens.CT_INT,lex,this.line,this.column).toString()));
-                    break;
+                    // back();
+                    state = 0;
+                        coordinates.setEndColumn(column);
+                    System.out.println("TERMINEI O TOKEN");
+                    System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.CT_INT,lex,coordinates.getLine(),coordinates.getStartColumn())));
                 case 7:
-                    back();
-                    //this.column++;
-                    this.state = 0;
-                    TokensFile.write((new TokensClass(Tokens.CT_FLOAT,lex,this.line,this.column).toString()));
-                    break;
+                    // back();
+                    state = 0;
+                        coordinates.setEndColumn(column);
+                    System.out.println("TERMINEI O TOKEN");
+                    System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.CT_FLOAT,lex,coordinates.getLine(),coordinates.getStartColumn())));
 
                 case 8:
-                    back();
+                    // back();
 
                     if(lex.equals(">")) {
-                        currentChar = nextChar();
+                        // currentChar = nextChar();
                         if(currentChar == '=') {
                             lex += currentChar;
-                            //this.column++;
-                            this.state = 0;
-                            TokensFile.write((new TokensClass(Tokens.OPR_MAIORIG,lex,this.line,this.column).toString()));
+                        column++;
+    
+                            state = 0;
+                        coordinates.setEndColumn(column);
+
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_MAIORIG,lex,coordinates.getLine(),coordinates.getStartColumn())));
                         }else {
-                            back();
-                            //this.column++;
-                            this.state = 0;
-                            TokensFile.write((new TokensClass(Tokens.OPR_MAIOR,lex,this.line,this.column).toString()));
+                            // back();
+    
+                            state = 0;
+                        coordinates.setEndColumn(column);
+
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_MAIOR,lex,coordinates.getLine(),coordinates.getStartColumn())));
                         }
                     }else if(lex.equals("<")) {
-                        currentChar = nextChar();
+                        // currentChar = nextChar();
                         if(currentChar == '=') {
                             lex += currentChar;
-                            //this.column++;
-                            this.state = 0;
-                            TokensFile.write((new TokensClass(Tokens.OPR_MENORIG,lex,this.line,this.column).toString()));
+                        column++;
+    
+                            state = 0;
+                        coordinates.setEndColumn(column);
+
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_MENORIG,lex,coordinates.getLine(),coordinates.getStartColumn())));
                         } else {
-                            back();
-                            //this.column++;
-                            this.state = 0;
-                            TokensFile.write((new TokensClass(Tokens.OPR_MENOR,lex,this.line,this.column).toString()));
+                            // back();
+    
+                            state = 0;
+                        coordinates.setEndColumn(column);
+
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_MENOR,lex,coordinates.getLine(),coordinates.getStartColumn())));
                         }
                     }else if(lex.equals("=")) {
-                        currentChar = nextChar();
                         if(currentChar == '=') {
-                            lex+=currentChar;
-                            //this.column++;
-                            this.state = 0;
-                            TokensFile.write((new TokensClass(Tokens.OPR_DIGUAL,lex,this.line,this.column).toString()));
+                        lex += currentChar;
+                    column++;
+                        state = 0;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_DIGUAL,lex,coordinates.getLine(),coordinates.getStartColumn())));
                         } else {
-                            back();
-                            //this.column++;
-                            this.state = 0;
-                            TokensFile.write((new TokensClass(Tokens.OPR_IGUAL,lex,this.line,this.column).toString()));
+                            state = 0;
+                        coordinates.setEndColumn(column);
+
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_IGUAL,lex,coordinates.getLine(),coordinates.getStartColumn())));
                         }
                     }else if(lex.equals("!")) {
-                        currentChar = nextChar();
+                        // currentChar = nextChar();
                         if(currentChar == '=') {
-                            lex+=currentChar;
-                            //this.column++;
-                            this.state = 0;
-                            TokensFile.write((new TokensClass(Tokens.OPR_DIF,lex,this.line,this.column).toString()));
+                            lex += currentChar;
+                        column++;
+    
+                            state = 0;
+                        coordinates.setEndColumn(column);
+
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.OPR_DIF,lex,coordinates.getLine(),coordinates.getStartColumn())));
                         } else {
-                            back();
-                            //this.column++;
-                            this.state = 0;
-                            TokensFile.write((new TokensClass(Tokens.ERR_DESC,lex,this.line,this.column).toString()));
+                            // back();
+    
+                            state = 0;
+                        coordinates.setEndColumn(column);
+
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.ERR_DESC,lex,coordinates.getLine(),coordinates.getStartColumn())));
                         }
                     } else {
-                        //this.column++;
-                        this.state = 0;
-                        TokensFile.write((new TokensClass(Tokens.ERR_DESC,lex,this.line,this.column).toString()));
+
+                        state = 0;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return((new TokensClass(Tokens.ERR_DESC,lex,coordinates.getLine(),coordinates.getStartColumn())));
                     }
-                    break;
+                    
                 case 9:
-                    back();
-                    this.position = this.currentLine.length();
-                    this.state = 0;
+                    // back();
+                    // this.position = this.currentLine.length();
+                    state = 0;
                     break;
 
                 case 10:
                     if(Symbols.isLetter(currentChar)) {
                         lex += currentChar;
+                    column++;
                     } else if(!Symbols.isLetter(currentChar) || Symbols.isOther(currentChar) || Symbols.isOperator(currentChar) || Symbols.isSymbol(currentChar)) {
-                        back();
-                        this.state = 11;
+                        // back();
+                        state = 11;
                     }
                     break;
-
                 case 11:
-                    back();
+                    // back();
                     if(this.hashTable.reservedWord.get(lex) != null) {
-                        //this.column++;
-                        this.state = 0;
-                        TokensFile.write((new TokensClass(this.hashTable.reservedWord.get(lex),lex,this.line,this.column).toString()));
-                    }else {
-                        //this.column++;
-                        TokensFile.write((new TokensClass(Tokens.ERR_PR,lex,this.line,this.column).toString()));
+
+                        state = 0;
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return new TokensClass(this.hashTable.reservedWord.get(lex),lex,coordinates.getLine(),coordinates.getStartColumn());
+                    } else {
+                        coordinates.setEndColumn(column);
+                        System.out.println("TERMINEI O TOKEN");
+                        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                        return new TokensClass(Tokens.ERR_PR,lex,coordinates.getLine(),coordinates.getStartColumn());
                     }
-                    break;
+                    // 
                 case 12:
-                    back();
+                    // back();
                     while(currentChar != '"') {
-                        currentChar = nextChar();
+                        // currentChar = nextChar();
                         lex += currentChar;
-                        this.currentColumn++;
+                    column++;
+                        // this.currentColumn++;
                     } 
-                    //this.column++;
-                    this.state = 0;
-                    TokensFile.write((new TokensClass(Tokens.CT_STRING,lex,this.line,this.column).toString()));
-                    break;
+                    state = 0;
+                    coordinates.setEndColumn(column);
+                    System.out.println("TERMINEI O TOKEN");
+                    System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                    return((new TokensClass(Tokens.CT_STRING,lex,coordinates.getLine(),coordinates.getStartColumn())));
+                    
                 case 13:
-                    back();
+                    // back();
                     while(currentChar != '\'') {
-                        currentChar = nextChar();
+                        // currentChar = nextChar();
                         lex += currentChar;
+                    column++;
                     } 
-                    //this.column++;
-                    this.state = 0;
-                    TokensFile.write((new TokensClass(Tokens.CT_CHAR,lex,this.line,this.column).toString()));
-                    break;
+                    state = 0;
+                    coordinates.setEndColumn(column);
+                    System.out.println("TERMINEI O TOKEN");
+                    System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+                    return((new TokensClass(Tokens.CT_CHAR,lex,coordinates.getLine(),coordinates.getStartColumn())));
+                    
             }
         }
     }
 
-    private boolean isEOF() {
-        return this.position == this.content.length;
+/*     private boolean isEOF() {
+    System.out.println("TERMINEI O TOKEN");
+    System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
+    return this.position == this.content.length;
     }
 
-    private void back() {
+    // private void back() {
         this.position--;
-        this.currentColumn--;
+        // this.currentColumn--;
     }
 
-    private char nextChar() {
+    // private char nextChar() {
+        System.out.println("TERMINEI O TOKEN");
+        System.out.println("lex = " + lex);
+                        System.out.println("Terminei na coluna " + column);
         return this.content[this.position++];
-    }
+    } */
 }

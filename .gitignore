@@ -22,3 +22,11 @@
 # ​virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml 
 ​hs_err_pid​*
 
+Main.class
+analisadores/lexico/HashTablePL.class
+analisadores/lexico/Lexico.class
+analisadores/lexico/Symbols.class
+analisadores/lexico/tokens/Tokens.class
+analisadores/lexico/tokens/TokensClass.class
+analisadores/lexico/tokens/TokensFile.class
+out
