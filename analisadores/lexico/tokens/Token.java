@@ -1,14 +1,14 @@
 package analisadores.lexico.tokens;
 
-public class TokensClass {
+public class Token {
 
-    public Tokens category;
+    public TokensEnum category;
     public String lexical;
     public int line, column;
     
-    public TokensClass() {}
+    public Token() {}
 
-    public TokensClass(Tokens category, String lexical, int line, int column) {
+    public Token(TokensEnum category, String lexical, int line, int column) {
         this.category = category;
         this.lexical = lexical;
         this.line = line;

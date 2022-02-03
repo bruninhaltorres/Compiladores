@@ -3,34 +3,34 @@ package analisadores.lexico;
 
 import java.util.Hashtable;
 
-import analisadores.lexico.tokens.Tokens;
+import analisadores.lexico.tokens.TokensEnum;
 
 public class HashTablePL {
-    Hashtable<String, Tokens> reservedWord = new Hashtable<>();
+    Hashtable<String, TokensEnum> reservedWord = new Hashtable<>();
 
     public HashTablePL() {
-		reservedWord.put("main", Tokens.PR_MAIN);
-		reservedWord.put("function", Tokens.PR_FN);
-		reservedWord.put("return", Tokens.PR_RETURN);
-		reservedWord.put("void",Tokens.PR_VOID);
-		reservedWord.put("int",Tokens.PR_INT);
-		reservedWord.put("float",Tokens.PR_FLOAT);
-		reservedWord.put("char",Tokens.PR_CHAR);
-		reservedWord.put("string",Tokens.PR_STRING);
-		reservedWord.put("bool",Tokens.PR_BOOL);
-		reservedWord.put("SysIn",Tokens.PR_SYSIN);
-		reservedWord.put("SysOut",Tokens.PR_SYSOUT);
-		reservedWord.put("if",Tokens.PR_IF);
-		reservedWord.put("elif",Tokens.PR_ELIF);
-		reservedWord.put("else",Tokens.PR_ELSE);
-		reservedWord.put("while",Tokens.PR_WHILE);
-		reservedWord.put("for",Tokens.PR_FOR);
-		reservedWord.put("true",Tokens.PR_TRUE);
-		reservedWord.put("false",Tokens.PR_FALSE);
-		reservedWord.put("array",Tokens.PR_ARRAY);
-		reservedWord.put("break",Tokens.PR_BREAK);
-		reservedWord.put("and",Tokens.OPR_AND);
-		reservedWord.put("or",Tokens.OPR_OR);
-		reservedWord.put("not",Tokens.OPR_NOT);
+		reservedWord.put("main", TokensEnum.PR_MAIN);
+		reservedWord.put("function", TokensEnum.PR_FN);
+		reservedWord.put("return", TokensEnum.PR_RETURN);
+		reservedWord.put("void",TokensEnum.PR_VOID);
+		reservedWord.put("int",TokensEnum.PR_INT);
+		reservedWord.put("float",TokensEnum.PR_FLOAT);
+		reservedWord.put("char",TokensEnum.PR_CHAR);
+		reservedWord.put("string",TokensEnum.PR_STRING);
+		reservedWord.put("bool",TokensEnum.PR_BOOL);
+		reservedWord.put("SysIn",TokensEnum.PR_SYSIN);
+		reservedWord.put("SysOut",TokensEnum.PR_SYSOUT);
+		reservedWord.put("if",TokensEnum.PR_IF);
+		reservedWord.put("elif",TokensEnum.PR_ELIF);
+		reservedWord.put("else",TokensEnum.PR_ELSE);
+		reservedWord.put("while",TokensEnum.PR_WHILE);
+		reservedWord.put("for",TokensEnum.PR_FOR);
+		reservedWord.put("true",TokensEnum.PR_TRUE);
+		reservedWord.put("false",TokensEnum.PR_FALSE);
+		reservedWord.put("array",TokensEnum.PR_ARRAY);
+		reservedWord.put("break",TokensEnum.PR_BREAK);
+		reservedWord.put("and",TokensEnum.OPR_AND);
+		reservedWord.put("or",TokensEnum.OPR_OR);
+		reservedWord.put("not",TokensEnum.OPR_NOT);
 	}
 }

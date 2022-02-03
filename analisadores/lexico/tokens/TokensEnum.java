@@ -2,8 +2,7 @@
 
 package analisadores.lexico.tokens;
 
-public enum Tokens {
-
+public enum TokensEnum {
     EOF,
     ID,
 
