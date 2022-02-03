@@ -87,75 +87,75 @@ public class Lexico {
                         this.state = 0;
                     } else if (currentChar == '#') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         this.state = 9;
                     } else if(currentChar == '/') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.OPR_DIV,lex,this.line,this.column)));
                     } else if(currentChar == '+') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.OPR_ADD,lex,this.line,this.column)));
                     } else if(currentChar == '-') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.OPR_SUB,lex,this.line,this.column)));
                     } else if(currentChar == '*') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.OPR_MULT,lex,this.line,this.column)));
                     } else if(currentChar == '%') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.OPR_MOD,lex,this.line,this.column)));
                     } else if(currentChar == '(') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.OP_PAR,lex,this.line,this.column)));
                     } else if(currentChar == ')') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.CL_PAR,lex,this.line,this.column)));
                     } else if(currentChar == '{') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.OP_CHAVES,lex,this.line,this.column)));
                     } else if(currentChar == '}') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.CL_CHAVES,lex,this.line,this.column)));
                     } else if(currentChar == '[') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.OP_COLC,lex,this.line,this.column)));
                     } else if(currentChar == ']') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.CL_COLC,lex,this.line,this.column)));
                     } else if(currentChar == ';') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.S_PVIRG,lex,this.line,this.column)));
                     } else if(currentChar == ',') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.S_VIRG,lex,this.line,this.column)));
                     } else if(currentChar == '&') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.OPR_CONC,lex,this.line,this.column)));
                     } else if (currentChar == '~') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.OPR_INVERS,lex,this.line,this.column)));
                     } else if(currentChar == '"') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         this.state = 12;
                     } else if (currentChar == '\'') {
                         lex += currentChar;
-                        //this.column++;
+                        
                         this.state = 13;
                     } else {
                         return((new Token(TokensEnum.ERR_DESC,lex,this.line,this.column)));
@@ -176,13 +176,13 @@ public class Lexico {
                         back();
 					    this.state = 3;
                     } else {
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.ERR_ID,lex,this.line,this.column)));
                     }
                     break;
                 case 3:
                     back();
-                    //this.column++;
+                    
                     return((new Token(TokensEnum.ID,lex,this.line,this.column)));
                 case 4:
                     if(Symbols.isDigit(currentChar)) {
@@ -190,12 +190,12 @@ public class Lexico {
                     } else if(currentChar == '.') {
                         lex += currentChar;
                         this.state = 5;
-                        //this.column++;
+                        
                     } else if(!Symbols.isLetter(currentChar) || !Symbols.isDigit(currentChar) || Symbols.isOther(currentChar) || Symbols.isOperator(currentChar)) { // pode ter uma letra depois do digito?
                         back();
                         this.state = 6;
                     } else {
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.ERR_NUM,lex,this.line,this.column)));
                     }
                     break;
@@ -203,24 +203,24 @@ public class Lexico {
                     if(Symbols.isDigit(currentChar)) {
                         lex += currentChar;
                     } else if(currentChar == '.') {
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.ERR_NUM,lex,this.line,this.column)));
                     } else if(!Symbols.isLetter(currentChar) || !Symbols.isDigit(currentChar) || Symbols.isOther(currentChar) || Symbols.isOperator(currentChar)) {
                         back();
                         this.state = 7;
                     } else {
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.ERR_NUM,lex,this.line,this.column)));
                     }
                     break;
                 case 6:
                     back();
-                    //this.column++;
+                    
                     return((new Token(TokensEnum.CT_INT,lex,this.line,this.column)));
                     
                 case 7:
                     back();
-                    //this.column++;
+                    
                     return((new Token(TokensEnum.CT_FLOAT,lex,this.line,this.column)));
 
                 case 8:
@@ -230,48 +230,48 @@ public class Lexico {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex += currentChar;
-                            //this.column++;
+                            
                             return((new Token(TokensEnum.OPR_MAIORIG,lex,this.line,this.column)));
                         }else {
                             back();
-                            //this.column++;
+                            
                             return((new Token(TokensEnum.OPR_MAIOR,lex,this.line,this.column)));
                         }
-                    }else if(lex.equals("<")) {
+                    } else if(lex.equals("<")) {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex += currentChar;
-                            //this.column++;
+                            
                             return((new Token(TokensEnum.OPR_MENORIG,lex,this.line,this.column)));
                         } else {
                             back();
-                            //this.column++;
+                            
                             return((new Token(TokensEnum.OPR_MENOR,lex,this.line,this.column)));
                         }
-                    }else if(lex.equals("=")) {
+                    } else if(lex.equals("=")) {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex+=currentChar;
-                            //this.column++;
+                            
                             return((new Token(TokensEnum.OPR_DIGUAL,lex,this.line,this.column)));
                         } else {
                             back();
-                            //this.column++;
+                            
                             return((new Token(TokensEnum.OPR_IGUAL,lex,this.line,this.column)));
                         }
-                    }else if(lex.equals("!")) {
+                    } else if(lex.equals("!")) {
                         currentChar = nextChar();
                         if(currentChar == '=') {
                             lex+=currentChar;
-                            //this.column++;
+                            
                             return((new Token(TokensEnum.OPR_DIF,lex,this.line,this.column)));
                         } else {
                             back();
-                            //this.column++;
+                            
                             return((new Token(TokensEnum.ERR_DESC,lex,this.line,this.column)));
                         }
                     } else {
-                        //this.column++;
+                        
                         return((new Token(TokensEnum.ERR_DESC,lex,this.line,this.column)));
                     }
                     
@@ -292,10 +292,10 @@ public class Lexico {
                 case 11:
                     back();
                     if(this.hashTable.reservedWord.get(lex) != null) {
-                        //this.column++;
+                        
                         return((new Token(this.hashTable.reservedWord.get(lex),lex,this.line,this.column)));
-                    }else {
-                        //this.column++;
+                    } else {
+                        
                         return((new Token(TokensEnum.ERR_PR,lex,this.line,this.column)));
                     }
 
@@ -306,7 +306,7 @@ public class Lexico {
                         lex += currentChar;
                         this.currentColumn++;
                     } 
-                    //this.column++;
+                    
                     return((new Token(TokensEnum.CT_STRING,lex,this.line,this.column)));
 
                 case 13:
@@ -315,7 +315,7 @@ public class Lexico {
                         currentChar = nextChar();
                         lex += currentChar;
                     } 
-                    //this.column++;
+                    
                     return((new Token(TokensEnum.CT_CHAR,lex,this.line,this.column)));
 
             }
