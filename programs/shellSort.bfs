@@ -1,4 +1,4 @@
-function void _shellSort(array int _nums, int _numsSize) {
+function void _shellSort(array int _nums[], int _numsSize) {
     int _h = 1;
 
     while (_h < _numsSize) {
