@@ -10,14 +10,6 @@ public class Main {
       TokensFile.createFile(outputFile);
       Lexico lexical = new Lexico(BFSfile);
       
-      /**
-       * 1 -  Lê arquivo
-       * 2 - Pega uma linha, se for null acabou o arquivo (printa o EOF)
-       * 3 - Se nao for null, eu printo a linha vou em cada palavra da linha e dela e formo um token (Caso especial: strings)
-       * 4 - Column na nextToken?
-       * 5 - Chorar muito e surtar ate arrancar os cabelos
-       */
-      
       Token token;
       do {
         token = lexical.nextToken();
