@@ -1,5 +1,6 @@
 import analisadores.lexico.Lexico;
 import analisadores.lexico.tokens.Token;
+import analisadores.lexico.tokens.TokensEnum;
 import analisadores.lexico.tokens.TokensFile;
 
 public class Main {
@@ -13,6 +14,9 @@ public class Main {
       Token token;
       do {
         token = lexical.nextToken();
+        if(token.category.equals(TokensEnum.COMMENT)) { // Comentário
+          continue;
+        }
         TokensFile.write(token.toString());
       } while (!token.lexical.equals("EOF"));
       

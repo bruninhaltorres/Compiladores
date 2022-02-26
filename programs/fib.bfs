@@ -1,5 +1,4 @@
 function main() {
-    
     int _n, _total;
     SysOut("Digite o número limite desejado");
     SysIn(_n);
@@ -12,7 +11,7 @@ function main() {
 
     while (_next <= _n) { 
         if (_x1 + _x2 > _n) {
-            SysOut(_next);
+            SysOut(_next); #Último elemento da sequência
         } else {
             SysOut(_next + ", ");
         }

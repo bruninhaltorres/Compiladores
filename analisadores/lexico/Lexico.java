@@ -277,7 +277,8 @@ public class Lexico {
                     
                 case 9:
                     back();
-                    this.position = this.currentLine.length();
+                    this.position = this.content.length;
+                    return((new Token(TokensEnum.COMMENT,lex,this.line,this.column)));
 
 
                 case 10:
