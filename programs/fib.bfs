@@ -1,24 +1,23 @@
-function int _fibonacci(int _n) {
-    if( _n < 2 ) {
-        return _n;    
-    }
-
-    return _fibonacci(_n - 1) + _fibonacci(_n - 2);
-}
-
 function main() {
     
     int _n, _total;
     SysOut("Digite o número limite desejado");
     SysIn(_n);
 
-    int _i;
-    for(_i = 0, _n) {
-        _total = _fibonacci(_i);
-        if(_i == _n - 1) {
-            SysOut(_total);
+    int _x1 = 0;
+    int _x2 = 1;
+
+    SysOut("Série de Fibonacci até " + _n + ": "_x1 + ", " + _x2 ", ");
+    int _next = _x1 + _x2;
+
+    while (_next <= _n) { 
+        if (_x1 + _x2 > _n) {
+            SysOut(_next);
         } else {
-            SysOut(_total + ", ");
+            SysOut(_next + ", ");
         }
+        _x1 = _x2;
+        _x2 = _next;
+        _next = _x1 + _x2;
     }
 }
