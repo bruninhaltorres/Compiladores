@@ -147,27 +147,31 @@ public class Sintatico {
 
     private void DcArr() {
         result("DcArr", "'array' Type '_''id''[' 'int' ']' DcArrAtr';'");
-        
+
         Type();
 
         if (token.category.equals(TokensEnum.OP_CHAVES)) {
             System.out.println();
             getToken();
 
-            if (token.category.equals(TokensEnum.CT)) {
+            if (token.category.equals(TokensEnum.CT_INT)) {
                 System.out.println();
                 getToken();
 
                 if (token.category.equals(TokensEnum.CL_CHAVES)) {
                     System.out.println();
-                getToken();
+                    getToken();
+
+                    DcArrAtr();
+                } else {
+                    error("']'")
                 }
+            } else {
+                error("'int'");
             }
-        } else {error("'int'");
+        } else {
             error("'['");
         }
-
-        DcArrAtr();
 
         if (token.category.equals(TokensEnum.S_PVIRG)) {
             System.out.println(token);
@@ -178,17 +182,15 @@ public class Sintatico {
     }
 
     private void DcArrAtr() {
-        result("DcArrAtr", "'array' Type '_''id''[' 'int' ']' DcArrAtr  ';'");
-        
-        Type();
+        result("DcArrAtr", "'array' Type '_''id''[' 'int' ']' '=' '{' Ea '}';'");
 
-        DcArrAtr();
-
-        if (token.category.equals(TokensEnum.S_PVIRG)) {
-            System.out.println(token);
-            getToken();
+        if (token.category.equals(TokensEnum.OPR_IGUAL)){
+            if(isConstant()) {
+                System.out.println(token);
+                getToken();
+            } 
         } else {
-            error("';'");
+            result("DcArrAtr", epsilon);
         }
     }
 
@@ -208,41 +210,46 @@ public class Sintatico {
 
     }
 
+    
+
     private void DcVarAtr() {
         if (token.category.equals(TokensEnum.ID)) {
-            result("DcVarAtr", "'_''id' Id Atr DcVarAtrFat");
+            result("DcVarAtr", "'_''id' Atr DcVarAtrFat");
 
             System.out.println(token);
             getToken();
-
-            Id(); //PARAMOS AQUI
-            Atr();
+            
+            Atr(); //PARAMOS AQUI
             DcIdAtrFat();
         } else {
             error("'id'");
         }
     }
 
-    private void Id() {
-        result("Id", "Ea");
-
-        System.out.println(token);
-        getToken();
-
-        Ea();
-    }
-
     private void Atr() {
-        if(token.category.equals(CategTokens.OP_ATR)) {
-            printProduction("Atr", "'=' AtrFat");
+        if(token.category.equals(TokensEnum.OPR_IGUAL)) {
+            result("Atr", "'=' MultAtr");
 
             System.out.println(token);
-            setNextToken();
+            getToken();
+            
+            MultAtr();
+        } else {
+            result("Atr", epsilon);
+        }
+    }
 
-            AtrFat();
+    private void MultAtr() {
+        if (token.category.equals(TokensEnum.ID)) {
+            result("MultAtr", "'_''id' Atr");
+
+            System.out.println(token);
+            getToken();
+
+            Atr();
         }
         else {
-            printProduction("Atr", epsilon);
+            result("MultAtr", epsilon);
         }
     }
 
@@ -325,10 +332,13 @@ public class Sintatico {
         }
     }
 
+    private boolean isConstant () {
+        return return token.category.equals(TokensEnum.CT_INT) || token.category.equals(TokensEnum.CT_FLOAT) || token.category.equals(TokensEnum.CT_CHAR) || token.category.equals(TokensEnum.CT_STRING) || token.category.equals(TokensEnum.PR_TRUE) || token.category.equals(TokensEnum.PR_FALSE) ;
+    }
+
     public boolean isVarType () {
         return token.category.equals(TokensEnum.PR_INT) || token.category.equals(TokensEnum.PR_FLOAT) || token.category.equals(TokensEnum.PR_CHAR) || token.category.equals(TokensEnum.PR_STRING) || token.category.equals(TokensEnum.PR_BOOL);
     }
-
 
     public boolean isFuncType () {
         return token.category.equals(TokensEnum.PR_VOID) || isVarType();
