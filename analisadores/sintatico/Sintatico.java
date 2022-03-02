@@ -70,7 +70,7 @@ public class Sintatico {
             DcFunction(); // PARAMOS AQUI
             S();
             
-        } else if(isTypeCategory()){
+        } /* else if(isTypeCategory()){
             result("S", "DcVar S");
             
             DcVar();
@@ -78,7 +78,7 @@ public class Sintatico {
         } else {
             result("S", epsilon);
             System.out.println(token);
-        }
+        } */
     }
 
     private void DcFunction () {
@@ -130,12 +130,12 @@ public class Sintatico {
     }
 
     private void Instructions() {
-        if (isVarType()) { //Variaveis normais
+        if (isVarType()) {
             result("Instructions", "DcVar Instructions");
 
             DcVar();
             Instructions();
-        } else if (token.category.equals(TokensEnum.PR_ARRAY)) {
+        } else if (token.category.equals(TokensEnum.PR_ARRAY)) { //OK
             result("Instructions", "DcArr Instructions");
             System.out.println(token);
             getToken();
@@ -147,10 +147,10 @@ public class Sintatico {
 
     private void DcArr() {
         result("DcArr", "'array' Type '_''id''[' 'int' ']' DcArrAtr';'");
-
+        
         Type();
 
-        if (token.category.equals(TokensEnum.OP_CHAVES)) {
+        if (token.category.equals(TokensEnum.OP_COLC)) {
             System.out.println();
             getToken();
 
@@ -158,13 +158,13 @@ public class Sintatico {
                 System.out.println();
                 getToken();
 
-                if (token.category.equals(TokensEnum.CL_CHAVES)) {
+                if (token.category.equals(TokensEnum.CL_COLC)) {
                     System.out.println();
                     getToken();
 
                     DcArrAtr();
                 } else {
-                    error("']'")
+                    error("']'");
                 }
             } else {
                 error("'int'");
@@ -182,13 +182,53 @@ public class Sintatico {
     }
 
     private void DcArrAtr() {
-        result("DcArrAtr", "'array' Type '_''id''[' 'int' ']' '=' '{' Ea '}';'");
-
+        result("DcArrAtr", "'=' '{' MultArrAtr '}'");
+        
         if (token.category.equals(TokensEnum.OPR_IGUAL)){
-            if(isConstant()) {
+            System.out.println(token);
+            getToken();
+            
+            if (token.category.equals(TokensEnum.OP_CHAVES)) {
                 System.out.println(token);
                 getToken();
-            } 
+                
+                ArrAtr();
+                
+                if(token.category.equals(TokensEnum.CL_CHAVES)) {
+                    System.out.println(token);
+                    getToken();
+                } else {
+                    error("'}'");
+                }
+            } else {
+                error("'{'");
+            }
+        } else {
+            result("DcArrAtr", epsilon);
+        }
+    }
+
+    private void ArrAtr() {
+        result("DcArrAtr", "CT | 'id' MultArrAtr");
+
+        if (isConstant() || token.category.equals(TokensEnum.ID)) {
+            System.out.println(token);
+            getToken();
+                    
+            MultArrAtr();
+        } else {
+            error("CT, 'id'");
+        }
+    }
+
+    private void MultArrAtr() {
+        result("MultArrAtr"," ',' ArrAtr");
+
+        if(token.category.equals(TokensEnum.S_VIRG)) {
+            System.out.println(token);
+            getToken();
+
+            ArrAtr();
         } else {
             result("DcArrAtr", epsilon);
         }
@@ -228,11 +268,12 @@ public class Sintatico {
 
     private void Atr() {
         if(token.category.equals(TokensEnum.OPR_IGUAL)) {
-            result("Atr", "'=' MultAtr");
+            result("Atr", "'=' Ec MultAtr");
 
             System.out.println(token);
             getToken();
             
+            Ec(); // Falta fazer
             MultAtr();
         } else {
             result("Atr", epsilon);
@@ -240,15 +281,15 @@ public class Sintatico {
     }
 
     private void MultAtr() {
-        if (token.category.equals(TokensEnum.ID)) {
-            result("MultAtr", "'_''id' Atr");
+        //MultAtr = ID | Ec
+        if (token.category.equals(TokensEnum.S_VIRG)) {
+            result("MultAtr", "',' Atr");
 
             System.out.println(token);
             getToken();
 
             Atr();
-        }
-        else {
+        } else {
             result("MultAtr", epsilon);
         }
     }
@@ -333,7 +374,7 @@ public class Sintatico {
     }
 
     private boolean isConstant () {
-        return return token.category.equals(TokensEnum.CT_INT) || token.category.equals(TokensEnum.CT_FLOAT) || token.category.equals(TokensEnum.CT_CHAR) || token.category.equals(TokensEnum.CT_STRING) || token.category.equals(TokensEnum.PR_TRUE) || token.category.equals(TokensEnum.PR_FALSE) ;
+        return token.category.equals(TokensEnum.CT_INT) || token.category.equals(TokensEnum.CT_FLOAT) || token.category.equals(TokensEnum.CT_CHAR) || token.category.equals(TokensEnum.CT_STRING) || token.category.equals(TokensEnum.PR_TRUE) || token.category.equals(TokensEnum.PR_FALSE) ;
     }
 
     public boolean isVarType () {
@@ -344,8 +385,220 @@ public class Sintatico {
         return token.category.equals(TokensEnum.PR_VOID) || isVarType();
     }
 
+    private void Ec() {
+        result("Ec", "Eb EcLL");
+        Eb();
+        EcLL();
+    }
+ 
+    private void EcLL() {
+        if(token.category.equals(TokensEnum.OPR_CONC)) {
+            result("EcLL", "'OP_CONCAT' Eb EcLL");
+            System.out.println(token);
+            getToken();
+            Eb();
+            EcLL();
+        } else {
+            result("EcLL", epsilon);
+        }
+    }
+
+    private void Eb() {
+        result("Eb", "Tb EbLL");
+        Tb();
+        EbLL();
+    }
+
+    private void EbLL(){
+        if(token.category.equals(TokensEnum.OPR_OR) || token.category.equals( TokensEnum.OPR_AND)) {
+            if(token.category.equals(TokensEnum.OPR_OR)){
+                result("EbLL", "'OP_OR' Tb EbLL");
+            } else if(token.category.equals(TokensEnum.OPR_AND)){
+                result("EbLL", "'OP_AND' Tb EbLL");
+            }
+            System.out.println(token);
+            getToken();
+            Tb();
+            EbLL();
+        } else {
+            result("EbLL", epsilon);
+        }
+    }
+
+    private void Tb(){
+        result("Tb", "Ra TbLL");
+        Ra();
+        TbLL();
+    }
+
+    private void TbLL(){
+        if(token.category.equals(TokensEnum.OPR_NOT)){
+            result("TbLL", "'OPR_NOT' Ra TbLL");
+            System.out.println(token);
+            getToken();
+            Ra();
+            TbLL();
+        } else{
+            result("TbLL", epsilon);
+        }
+    }
+
+    private void Ra(){
+        result("Ra", "Rb RaLL");
+        Rb();
+        RaLL();
+    }
+
+    private void RaLL(){
+        if(isRelCategory()){
+            result("RaLL", "Rel Rb RaLL");
+            Rel();
+            System.out.println(token);
+            getToken();
+            Rb();
+            RaLL();
+        } else{
+            result("RaLL", epsilon);
+        }
+    }
+
+    private void Rb(){
+        result("Rb", "Ea RbLL");
+        Ea();
+        RbLL();
+    }
+
+    private void RbLL(){
+        if(isOpsCategory()){
+            result("RbLL", "Ops Ea RbLL");
+            Ops();
+            System.out.println(token);
+            getToken();
+            Ea();
+            RbLL();
+        } else{
+            result("RbLL", epsilon);
+        }
+    }
+
+    private void Ea(){
+        result("Ea", "Ta EaLL");
+        Ta();
+        EaLL();
+    }
+
+    private void EaLL(){
+        if(token.category.equals(TokensEnum.OPR_ADD) || token.category.equals(TokensEnum.OPR_SUB)){
+            if(token.category.equals(TokensEnum.OPR_ADD)){
+                result("EaLL", "'OPR_ADD' Ta EaLL");
+            } else if(token.category.equals(TokensEnum.OPR_SUB)){
+                result("EaLL", "'OPR_SUB' Ta EaLL");
+            }
+            System.out.println(token);
+            getToken();
+            Ta();
+            EaLL();
+        } else{
+            result("EaLL", epsilon);
+        }
+    }
+
+    private void Ta(){
+        result("Ta", "Fa TaLL");
+        Fa();
+        TaLL();
+    }
+
+    private void TaLL(){
+        if(token.category.equals(TokensEnum.OPR_MULT)|| token.category.equals( TokensEnum.OPR_DIV) || token.category.equals( TokensEnum.OPR_MOD)){
+            if(token.category.equals(TokensEnum.OPR_MULT)){
+                result("TaLL", "'OPR_MULT' Fa TaLL");
+            } else if(token.category.equals(TokensEnum.OPR_DIV)){
+                result("TaLL", "'OPR_DIV' Fa TaLL");
+            } else if(token.category.equals(TokensEnum.OPR_MOD)){
+                result("TaLL", "'OPR_MOD' Fa TaLL");
+            }
+            System.out.println(token);
+            getToken();
+            Fa();
+            TaLL();
+        }
+        else{
+            result("TaLL", epsilon);
+        }
+    }
+
+    private void Fa(){
+        if(token.category.equals(TokensEnum.OP_PAR)){
+            result("Fa", "'(' Ec ')'");
+            System.out.println(token);
+            getToken();
+            Ec();
+            if (token.category.equals(TokensEnum.CL_PAR)){
+                System.out.println(token);
+                getToken();
+            } else {
+                error("')'");
+            }
+        }
+        else if(token.category.equals(TokensEnum.ID)){
+            result("Fa", "'id' IdFunCall");
+            System.out.println(token);
+            getToken();
+            IdFunCall();
+        } else if(token.category.equals(TokensEnum.CT_INT)){
+            result("Fa", "'CT_INT'");
+            System.out.println(token);
+            getToken();
+        } else if(token.category.equals(TokensEnum.CT_FLOAT)){
+            result("Fa", "'CT_FLOAT'");
+            System.out.println(token);
+            getToken();
+        } else if(token.category.equals(TokensEnum.PR_TRUE)){
+            result("Fa", "'PR_TRUE'");
+            System.out.println(token);
+            getToken();
+        } else if(token.category.equals(TokensEnum.PR_FALSE)){
+            result("Fa", "'PR_FALSE'");
+            System.out.println(token);
+            getToken();
+        } else if(token.category.equals(TokensEnum.CT_CHAR)){
+            result("Fa", "'CT_CHAR'");
+            System.out.println(token);
+            getToken();
+        } else if(token.category.equals(TokensEnum.CT_STRING)){
+            result("Fa", "'CT_STRING'");
+            System.out.println(token);
+            getToken();
+        } else if(token.category.equals(TokensEnum.OPR_NOT)){
+            result("Fa", "'OP_NOTUNI' 'id'");
+            System.out.println(token);
+            getToken();
+            if(token.category.equals(TokensEnum.ID)){
+                System.out.println(token);
+                getToken(); 
+            } else {
+                error("'id'");
+            }
+        // } else if(token.category.equals(TokensEnum.OP_SIZE)){
+        //     result("Fa", "'OP_SIZE' 'id'");
+        //     System.out.println(token);
+        //     getToken();
+        //     if(token.category.equals(TokensEnum.ID)){
+        //         System.out.println(token);
+        //         getToken();
+        //     } else {
+        //         error("'id'");
+        //     }
+        // } else {
+            error("'(', 'id', 'CT_INT', 'CT_FLOAT', 'PR_TRUE', 'PR_FALSE', 'CT_CHAR', 'CT_STRING', 'OP_NOTUNI'"); //removi o OP_SIZE
+        }
+    }
+
     public void error (String expecteds) {
         System.out.println("Error: Expected " + expecteds + " at position " + lexico.getPositionToken());
         System.exit(1);
     }
+
+    // a gente terminou a parte de atribuição de array e atribuição múltipla e pegamos as funções ec, ea etc 
 }
