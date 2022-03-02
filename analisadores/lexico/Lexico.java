@@ -2,9 +2,7 @@ package analisadores.lexico;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import analisadores.lexico.tokens.TokensEnum;
-import analisadores.lexico.tokens.Token;
-import analisadores.lexico.tokens.TokensFile;
+import analisadores.lexico.tokens.*;
 
 public class Lexico {
     private final HashTablePL hashTable = new HashTablePL();
