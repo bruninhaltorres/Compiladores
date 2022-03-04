@@ -130,17 +130,22 @@ public class Sintatico {
     }
 
     private void Instructions() {
-        if (isVarType()) {
+        if (isVarType()) { // Declaração de variável
             result("Instructions", "DcVar Instructions");
 
             DcVar();
             Instructions();
-        } else if (token.category.equals(TokensEnum.PR_ARRAY)) { //OK
+        } else if (token.category.equals(TokensEnum.PR_ARRAY)) { // Declaração de Array
             result("Instructions", "DcArr Instructions");
             System.out.println(token);
             getToken();
 
             DcArr();
+            Instructions();
+        } else if (token.category.equals(TokensEnum.PR_WHILE) || token.category.equals(TokensEnum.PR_IF) || token.category.equals(TokensEnum.PR_FOR)) {
+            result("Instructions", "Command Instructions");
+
+            Command();
             Instructions();
         }
     }
@@ -249,8 +254,6 @@ public class Sintatico {
         }
 
     }
-
-    
 
     private void DcVarAtr() {
         if (token.category.equals(TokensEnum.ID)) {
@@ -370,6 +373,208 @@ public class Sintatico {
 
         } else {
             result("MultDcParam", epsilon);
+        }
+    }
+
+    private void Command() {
+        if(token.category.equals(TokensEnum.PR_IF)){
+            result("Command", "if");
+            If();
+        } else if(token.category.equals(TokensEnum.PR_WHILE)){
+            result("Command", "while");
+            While();
+        } else if(token.category.equals(TokensEnum.PR_FOR)){
+            result("Command", "for");
+            For();
+        } else{
+            error("'while', 'if', 'for'");
+        }
+    }
+
+    private void Condicional() {
+        if(token.category.equals(TokensEnum.OP_PAR)) {
+            System.out.println(token);
+            getToken();
+
+            Eb();
+
+            if(token.category.equals(TokensEnum.CL_PAR)) {
+                System.out.println(token);
+                getToken();
+
+                if(token.category.equals(TokensEnum.OP_CHAVES)) {
+                    System.out.println(token);
+                    getToken();
+
+                    Instructions();
+
+                    if(token.category.equals(TokensEnum.CL_CHAVES)){
+                        Elif(); // PAREI AQUI
+                        Else();
+                    } else {
+                        error("'}'");
+                    }
+                } else {
+                    error("'{'");
+                }
+            } else {
+                error("')'");
+            }
+        } else {
+            error("'('");
+        }
+    }
+
+    private void If(){
+        if(token.category.equals(TokensEnum.PR_IF)) {
+            result("If", "'if' '(' Eb ')' '{' Instructions '}' Elif Else");
+
+            System.out.println(token);
+            getToken();
+
+            Condicional();
+        } else {
+            error("'If'");
+        }
+    }
+
+    private void Elif(){
+        int cont = 0;
+
+        if(token.category.equals(TokensEnum.PR_ELIF)) {
+            result("Elif", "'elif' '(' Eb ')' '{' Instructions '}' Elif Else");
+
+            System.out.println(token);
+            getToken();
+
+            Condicional();
+            cont = 1;
+        } else {
+            cont = 2;
+            error("'Elif'");
+        }
+
+        if(cont == 0){
+            result("Elif", epsilon);
+        }
+    }
+
+    private void Else(){
+        if(token.category.equals(TokensEnum.PR_ELSE)) {
+            result("Else", "'Else' '{' Instructions '}'");
+
+            System.out.println(token);
+            getToken();
+
+            Instructions();
+        }
+        else {
+            result("Else", epsilon);
+        }
+    }
+
+    private void While(){
+        if (token.category.equals(TokensEnum.PR_WHILE)) {
+            result("While", "'while' '(' Eb ')' '{' Instructions '}'");
+            
+            System.out.println(token);
+            getToken();
+            
+            if(token.category.equals(TokensEnum.OP_PAR)){
+                System.out.println(token);
+                getToken();
+
+                Eb();
+
+                if(token.category.equals(TokensEnum.CL_PAR)){
+                    System.out.println(token);
+                    getToken();
+                    
+                    if(token.category.equals(TokensEnum.OP_CHAVES)){
+                        System.out.println(token);
+                        getToken();
+                        
+                        Instructions();
+
+                        if(token.category.equals(TokensEnum.CL_CHAVES)){
+                            System.out.println(token);
+                            getToken();
+
+                        } else {
+                            error("'}'");
+                        }
+                    } else {
+                        error("'{'");
+                    }
+                }
+                else {
+                    error("')'");
+                }
+            }
+            else {
+                error("'('");
+            }
+        }
+        else {
+            error("'While'");
+        }
+    }
+
+    private void For(){
+        if(token.category.equals(TokensEnum.PR_FOR)) {
+            result("For", "'for' '(' Init ';' Condit ';' Increment ')' '{' Instructions '}'");
+
+            System.out.println(token);
+            getToken();
+
+            if(token.category.equals(TokensEnum.OP_PAR)) {
+                System.out.println(token);
+                getToken();
+
+                Init(); //PAREI AQUI
+
+                if(token.category.equals(TokensEnum.S_PVIRG)) {
+                    System.out.println(token);
+                    getToken();
+
+                    Condit();
+
+                    if(token.category.equals(TokensEnum.S_PVIRG)) {
+                        System.out.println(token);
+                        getToken();
+    
+                        Increment();
+                        
+                        if(token.category.equals(TokensEnum.CL_PAR)) {
+                            System.out.println(token);
+                            getToken();
+                            
+                            if(token.category.equals(TokensEnum.OP_CHAVES)) {
+                                System.out.println(token);
+                                getToken();
+                                
+                                Instructions();
+
+                                if(token.category.equals(TokensEnum.CL_CHAVES)) {
+                                    System.out.println(token);
+                                    getToken();
+                                    
+                                } else {
+                                    error("'}'");
+                                }
+                            } else {
+                                error("'{'");
+                            }
+                        } else {
+                            error("')'");
+                        }    
+                    }
+                }
+            } else {
+                error("'('");
+            }
+        } else {
+            error("'for'");
         }
     }
 
