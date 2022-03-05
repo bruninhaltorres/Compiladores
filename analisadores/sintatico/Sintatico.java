@@ -1125,7 +1125,7 @@ public class Sintatico {
 
     private void RaLL() {
         if (isEqualityOPR()) {
-            result("RaLL", "Rel Rb RaLL");
+            result("RaLL", "Equality Rb RaLL");
             Equality();
             TokensFile.write(token.toString());
             getToken();
