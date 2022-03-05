@@ -10,7 +10,7 @@ public class Main {
     try {
       String BFSfile = args[0];
       String outputFile = args[1];
-      // TokensFile.createFile(outputFile);
+      TokensFile.createFile(outputFile);
       // Lexico lexical = new Lexico(BFSfile);
       Sintatico sintatico = new Sintatico(BFSfile);
       
@@ -22,8 +22,9 @@ public class Main {
         }
         TokensFile.write(token.toString());
       } while (!token.lexical.equals("EOF"));
+       */
       
-      TokensFile.closeFile(); */
+      TokensFile.closeFile();
 
     } catch (Exception e) {
       e.printStackTrace();

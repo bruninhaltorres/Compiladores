@@ -15,10 +15,6 @@ public class Token {
         this.column = column;
     }
 
-    public String getPosition() {
-        return this.line + ":" + this.column;
-    }
-
     @Override
     public String toString() {
         String format = "              [%04d,%04d] (%04d,%20s) {%s}\n";

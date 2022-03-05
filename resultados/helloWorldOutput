@@ -1,17 +1,21 @@
-0001  function main() {
+          S = 'function' DcFunction S
               [0001,0001] (0007,               PR_FN) {function}
+          DcFunction =  'main' FunctionHeader
               [0001,0010] (0006,             PR_MAIN) {main}
+          FunctionHeader = '(' Param ')' '{' Instructions '}'
               [0001,0014] (0047,              OP_PAR) {(}
+          Param = Epsilon
               [0001,0015] (0048,              CL_PAR) {)}
               [0001,0017] (0045,           OP_CHAVES) {{}
-0002  
-0003      SysOut("Alô Mundo.");
+          Instructions = InOut Instructions
+          InOut = SysOut
+          SysOut = 'SysOut' '(' ParamOut ')' ';'
               [0003,0005] (0016,           PR_SYSOUT) {SysOut}
               [0003,0011] (0047,              OP_PAR) {(}
+          ParamOut =  '"' CT_STRING '"' MultParamOut 
               [0003,0012] (0004,           CT_STRING) {"Alô Mundo."}
+          MultParamOut = Epsilon
               [0003,0024] (0048,              CL_PAR) {)}
               [0003,0025] (0052,             S_PVIRG) {;}
-0004  
-0005  }
+          Instructions = Epsilon
               [0005,0001] (0046,           CL_CHAVES) {}}
-              [0005,0002] (0000,                 EOF) {EOF}

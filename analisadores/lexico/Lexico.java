@@ -36,7 +36,6 @@ public class Lexico {
 
         if(currentLineAux != null) {
             this.currentLine = currentLineAux;
-            TokensFile.write(String.format("%04d  ", this.line) + this.currentLine + "\n");
             this.currentLine += " ";
             this.line++;
             this.position = 0;
@@ -319,6 +318,10 @@ public class Lexico {
 
             }
         }
+    }
+
+    public String getPosition() {
+        return String.format("[%d,%d]", this.line - 1 , this.column);
     }
 
     private boolean isEOF() {
