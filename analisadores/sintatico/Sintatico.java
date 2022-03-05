@@ -302,7 +302,7 @@ public class Sintatico {
             
             MultAtr();
         } else if(token.category.equals(TokensEnum.OP_COLC)) {
-            result("MultAtr", "'[' Ea ']' Atr");
+            result("Atr", "'[' Ea ']' Atr");
             TokensFile.write(token.toString());
             getToken();
 
@@ -535,10 +535,6 @@ public class Sintatico {
         }
     }
 
-    // private void CondWhile(){
-
-    // }
-
     private void While() {
         if (token.category.equals(TokensEnum.PR_WHILE)) {
             result("While", "'while' '(' Ec ')' '{' Instructions '}'");
@@ -551,7 +547,6 @@ public class Sintatico {
                 getToken();
 
                 Ec();
-                // MultAtr();
 
                 if (token.category.equals(TokensEnum.CL_PAR)) {
                     TokensFile.write(token.toString());
@@ -731,7 +726,7 @@ public class Sintatico {
             getToken();
 
             if (token.category.equals(TokensEnum.OP_COLC)) {
-                result("MultAtr", "'[' Ea ']'");
+                result("ParamIn", "'[' Ea ']' MultParamIn");
                 TokensFile.write(token.toString());
                 getToken();
 
@@ -810,7 +805,7 @@ public class Sintatico {
             getToken();
 
             if(token.category.equals(TokensEnum.OP_COLC)) {
-                result("MultParamOut", "'[' Ea ']'");
+                result("ParamOut", "'[' Ea ']' MultParamOut");
                 TokensFile.write(token.toString());
                 getToken();
     
