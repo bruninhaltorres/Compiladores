@@ -100,7 +100,11 @@ public class Sintatico {
     }
 
     private void Instructions() {
-        if (isVarType()) { // Declaração de variável
+        if(token.category.equals(TokensEnum.COMMENT)){
+            getToken();
+
+            Instructions();
+        } else if (isVarType()) { // Declaração de variável
             result("Instructions", "DcVar Instructions");
 
             DcVar();
@@ -247,12 +251,13 @@ public class Sintatico {
 
     private void DcVarAtr() {
         if (token.category.equals(TokensEnum.ID)) {
-            result("DcVarAtr", "ID  Atr DcVarAtrFat");
+            result("DcVarAtr", "ID Atr MultAtr");
 
             System.out.println(token.toString());
             getToken();
 
             Atr();
+            MultAtr();
         } else {
             error("ID");
         }
@@ -391,6 +396,7 @@ public class Sintatico {
             getToken();
 
             Eb();
+            
             if (token.category.equals(TokensEnum.CL_PAR)) {
                 System.out.println(token.toString());
                 getToken();
@@ -400,8 +406,10 @@ public class Sintatico {
                     getToken();
 
                     Instructions();
-
                     if (token.category.equals(TokensEnum.CL_CHAVES)) {
+                        System.out.println(token.toString());
+                        getToken();
+                        
                         Elif();
                         Else();
                     } else {
@@ -792,12 +800,12 @@ public class Sintatico {
             result("IdFunCall", "FunctionCall");
 
             FunctionCall();
-        } else {
+        } /* else {
             result("IdFunCall", "ID");
-
+            System.out.println("Entrei aq na IDFUNCALL COM O TOKEN: " + token.lexical);
             System.out.println(token.toString());
             getToken();
-        }
+        } */
     }
 
     private void FunctionCall() {
@@ -1176,7 +1184,7 @@ public class Sintatico {
     }
 
     private void error(String expectation) {
-        System.out.println("Error "+ lexico.getPosition() +": Expected " + expectation + " but recieved: " + token.lexical);
+        System.out.println("Error "+ lexico.getPosition() +": Expected " + expectation + " but received '" + token.lexical + "'");
         System.exit(1);
     }
 }
