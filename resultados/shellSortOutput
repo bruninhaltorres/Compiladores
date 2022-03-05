@@ -369,7 +369,7 @@ MultDcParam          MultDcParam = Epsilon
           Instructions = ID AtrId Instructions
               [0016,0017] (0001,                  ID) {_nums}
           AtrId = Atr
-          MultAtr = '[' Ea ']' Atr
+          Atr = '[' Ea ']' Atr
               [0016,0022] (0049,             OP_COLC) {[}
           Ea = Ta EaLL
           Ta = Fa TaLL
@@ -447,7 +447,7 @@ MultDcParam          MultDcParam = Epsilon
           Instructions = ID AtrId Instructions
               [0019,0013] (0001,                  ID) {_nums}
           AtrId = Atr
-          MultAtr = '[' Ea ']' Atr
+          Atr = '[' Ea ']' Atr
               [0019,0018] (0049,             OP_COLC) {[}
           Ea = Ta EaLL
           Ta = Fa TaLL
@@ -629,7 +629,7 @@ MultDcParam          MultDcParam = Epsilon
               [0036,0014] (0047,              OP_PAR) {(}
           ParamIn =  ID MultParamIn
               [0036,0015] (0001,                  ID) {_valores}
-          MultAtr = '[' Ea ']'
+          ParamIn = '[' Ea ']' MultParamIn
               [0036,0023] (0049,             OP_COLC) {[}
           Ea = Ta EaLL
           Ta = Fa TaLL
@@ -705,7 +705,7 @@ MultDcParam          MultDcParam = Epsilon
               [0041,0015] (0047,              OP_PAR) {(}
           ParamOut =  ID MultParamOut 
               [0041,0016] (0001,                  ID) {_valores}
-          MultParamOut = '[' Ea ']'
+          ParamOut = '[' Ea ']' MultParamOut
               [0041,0024] (0049,             OP_COLC) {[}
           Ea = Ta EaLL
           Ta = Fa TaLL
@@ -826,7 +826,7 @@ MultDcParam          MultDcParam = Epsilon
               [0048,0015] (0047,              OP_PAR) {(}
           ParamOut =  ID MultParamOut 
               [0048,0016] (0001,                  ID) {_valores}
-          MultParamOut = '[' Ea ']'
+          ParamOut = '[' Ea ']' MultParamOut
               [0048,0024] (0049,             OP_COLC) {[}
           Ea = Ta EaLL
           Ta = Fa TaLL
