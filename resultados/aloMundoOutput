@@ -15,7 +15,7 @@
           ParamOut =  '"' CT_STRING '"' MultParamOut 
               [0003,0012] (0004,           CT_STRING) {"Alô Mundo."}
           MultParamOut = Epsilon
-              [0003,0024] (0048,              CL_PAR) {)}
-              [0003,0025] (0052,             S_PVIRG) {;}
+              [0003,0025] (0048,              CL_PAR) {)}
+              [0003,0026] (0052,             S_PVIRG) {;}
           Instructions = Epsilon
               [0005,0001] (0046,           CL_CHAVES) {}}

@@ -28,7 +28,7 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.PR_FN)) {
             result("S", "'function' DcFunction S");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             DcFunction();
@@ -41,7 +41,7 @@ public class Sintatico {
     private void DcFunction() {
         if (token.category.equals(TokensEnum.PR_MAIN)) {
             result("DcFunction", " 'main' FunctionHeader");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             FunctionHeader();
@@ -50,7 +50,7 @@ public class Sintatico {
             Type();
 
             if (token.category.equals(TokensEnum.ID)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
                 FunctionHeader();
@@ -58,7 +58,7 @@ public class Sintatico {
 
             S();
         } else {
-            System.out.println("DCfunction");
+            TokensFile.write("DCfunction");
             error("'int', 'float', 'char', 'string', 'bool', 'void'");
         }
     }
@@ -67,23 +67,23 @@ public class Sintatico {
         result("FunctionHeader", "'(' Param ')' '{' Instructions '}'");
         
         if (token.category.equals(TokensEnum.OP_PAR)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             Param();
 
             if (token.category.equals(TokensEnum.CL_PAR)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
                 if (token.category.equals(TokensEnum.OP_CHAVES)) {
-                    System.out.println(token.toString());
+                    TokensFile.write(token.toString());
                     getToken();
 
                     Instructions();
 
                     if (token.category.equals(TokensEnum.CL_CHAVES)) {
-                        System.out.println(token.toString());
+                        TokensFile.write(token.toString());
                         getToken();
                     } else {
                         error("'}'");
@@ -111,7 +111,7 @@ public class Sintatico {
             Instructions();
         } else if (isArray()) { // Declaração de Array
             result("Instructions", "DcArr Instructions");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             DcArr();
@@ -134,7 +134,7 @@ public class Sintatico {
         } else if (token.category.equals(TokensEnum.ID)) {
             result("Instructions", "ID AtrId Instructions");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             AtrId();
@@ -145,35 +145,43 @@ public class Sintatico {
     }
 
     private void DcArr() {
-        result("DcArr", "'array' Type ID '[' 'int' ']' DcArrAtr';'");
+        result("DcArr", "'array' Type ID '[' CT_INT | ID ']' DcArrAtr';'");
 
         Type();
 
-        if (token.category.equals(TokensEnum.OP_COLC)) {
-            System.out.println(token.toString());
+        if (token.category.equals(TokensEnum.ID)) {
+            TokensFile.write(token.toString());
             getToken();
+        
 
-            if (token.category.equals(TokensEnum.CT_INT)) {
-                System.out.println(token.toString());
+            if (token.category.equals(TokensEnum.OP_COLC)) {
+                TokensFile.write(token.toString());
                 getToken();
 
-                if (token.category.equals(TokensEnum.CL_COLC)) {
-                    System.out.println(token.toString());
+                if (token.category.equals(TokensEnum.CT_INT) || token.category.equals(TokensEnum.ID)) {
+                    TokensFile.write(token.toString());
                     getToken();
 
-                    DcArrAtr();
+                    if (token.category.equals(TokensEnum.CL_COLC)) {
+                        TokensFile.write(token.toString());
+                        getToken();
+
+                        DcArrAtr();
+                    } else {
+                        error("']'");
+                    }
                 } else {
-                    error("']'");
+                    error("'int'");
                 }
             } else {
-                error("'int'");
+                error("'['");
             }
         } else {
-            error("'['");
+            error("ID");
         }
 
         if (token.category.equals(TokensEnum.S_PVIRG)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else {
             error("';'");
@@ -184,17 +192,17 @@ public class Sintatico {
         result("DcArrAtr", "'=' '{' MultArrAtr '}'");
 
         if (token.category.equals(TokensEnum.OPR_IGUAL)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             if (token.category.equals(TokensEnum.OP_CHAVES)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
                 ArrAtr();
 
                 if (token.category.equals(TokensEnum.CL_CHAVES)) {
-                    System.out.println(token.toString());
+                    TokensFile.write(token.toString());
                     getToken();
                 } else {
                     error("'}'");
@@ -211,7 +219,7 @@ public class Sintatico {
         result("ArrAtr", "CT | ID MultArrAtr");
 
         if (isConstant() || token.category.equals(TokensEnum.ID)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             MultArrAtr();
@@ -221,10 +229,9 @@ public class Sintatico {
     }
 
     private void MultArrAtr() {
-        result("MultArrAtr", " ',' ArrAtr");
-
         if (token.category.equals(TokensEnum.S_VIRG)) {
-            System.out.println(token.toString());
+            result("MultArrAtr", " ',' ArrAtr");
+            TokensFile.write(token.toString());
             getToken();
 
             ArrAtr();
@@ -241,7 +248,7 @@ public class Sintatico {
         DcVarAtr();
 
         if (token.category.equals(TokensEnum.S_PVIRG)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else {
             error("';'");
@@ -253,7 +260,7 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.ID)) {
             result("DcVarAtr", "ID Atr MultAtr");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             Atr();
@@ -263,16 +270,53 @@ public class Sintatico {
         }
     }
 
+    private void AtrId() {
+        if (token.category.equals(TokensEnum.OP_PAR)) {
+            result("AtrId", "FunctionCall");
+            
+            FunctionCall();
+        } else {
+            result("AtrId", "Atr");
+
+            // TokensFile.write(token.toString());
+            // getToken();
+
+            Atr();
+            if(token.category.equals(TokensEnum.S_PVIRG)){
+                TokensFile.write(token.toString());
+                getToken();
+            } else {
+                error("';'");
+            }
+        }
+    }
+
     private void Atr() {
         if (token.category.equals(TokensEnum.OPR_IGUAL)) {
             result("Atr", "'=' Ec MultAtr");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             Ec();
+            
             MultAtr();
-        } else {
+        } else if(token.category.equals(TokensEnum.OP_COLC)) {
+            result("MultAtr", "'[' Ea ']' Atr");
+            TokensFile.write(token.toString());
+            getToken();
+
+            Ea();
+
+            if(token.category.equals(TokensEnum.CL_COLC)){
+                TokensFile.write(token.toString());
+                getToken();
+
+                Atr();
+            } else {
+                error("']'");
+            }
+        }else {
             result("Atr", epsilon);
         }
     }
@@ -281,10 +325,25 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.S_VIRG)) {
             result("MultAtr", "',' DcVarAtr");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             DcVarAtr();
+        } else if(token.category.equals(TokensEnum.OP_COLC)) {
+            result("MultAtr", "'[' Ea ']' MultAtr");
+            TokensFile.write(token.toString());
+            getToken();
+
+            Ea();
+            MultAtr();
+
+            if(token.category.equals(TokensEnum.CL_COLC)){
+                TokensFile.write(token.toString());
+                getToken();
+            } else {
+                error("']'");
+            }
+
         } else {
             result("MultAtr", epsilon);
         }
@@ -296,7 +355,7 @@ public class Sintatico {
             DcParam();
         } else if (token.category.equals(TokensEnum.PR_ARRAY)) {
             result("Param", "DcParamArray");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             DcParamArray();
         } else {
@@ -310,8 +369,8 @@ public class Sintatico {
         Type();
 
         if (token.category.equals(TokensEnum.ID)) {
-            System.out.println(token.toString());
-            getToken();
+            TokensFile.write(token.toString());
+            // getToken();
 
             MultDcParam();
         } else {
@@ -321,10 +380,11 @@ public class Sintatico {
 
     private void MultDcParam() {
         if (token.category.equals(TokensEnum.S_VIRG)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             if (isVarType()) { // verifica se é outra variável
                 result("MultDcParam", "',' DcParam");
+
                 DcParam();
             } else if (token.category.equals(TokensEnum.PR_ARRAY)) { // ou se é outro array
                 result("MultDcParam", "',' DcParamArray");
@@ -334,11 +394,11 @@ public class Sintatico {
                 error("'int', 'float', 'bool', 'string', 'char', 'array'");
             }
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
         } else {
-            System.out.println("MultDcParam");
+            TokensFile.write("MultDcParam");
 
             result("MultDcParam", epsilon);
         }
@@ -350,15 +410,15 @@ public class Sintatico {
         Type();
 
         if (token.category.equals(TokensEnum.ID)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             if (token.category.equals(TokensEnum.OP_COLC)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
                 if (token.category.equals(TokensEnum.CL_COLC)) {
-                    System.out.println(token.toString());
+                    TokensFile.write(token.toString());
                     getToken();
 
                     MultDcParam();
@@ -392,22 +452,22 @@ public class Sintatico {
     private void Condicional() {
         result("Condicional", "'(' Eb ')' '{' Instructions '}' Elif Else");
         if (token.category.equals(TokensEnum.OP_PAR)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             Eb();
             
             if (token.category.equals(TokensEnum.CL_PAR)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
                 if (token.category.equals(TokensEnum.OP_CHAVES)) {
-                    System.out.println(token.toString());
+                    TokensFile.write(token.toString());
                     getToken();
 
                     Instructions();
                     if (token.category.equals(TokensEnum.CL_CHAVES)) {
-                        System.out.println(token.toString());
+                        TokensFile.write(token.toString());
                         getToken();
                         
                         Elif();
@@ -429,7 +489,7 @@ public class Sintatico {
     private void If() {
         result("If", " 'if' Condicional");
 
-        System.out.println(token.toString());
+        TokensFile.write(token.toString());
         getToken();
 
         Condicional();
@@ -439,7 +499,7 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.PR_ELIF)) {
             result("Elif", "'elif' Condicional");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             Condicional();
@@ -452,17 +512,17 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.PR_ELSE)) {
             result("Else", "'else' '{' Instructions '}'");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             if (token.category.equals(TokensEnum.OP_CHAVES)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
                 Instructions();
 
                 if (token.category.equals(TokensEnum.CL_CHAVES)) {
-                    System.out.println(token.toString());
+                    TokensFile.write(token.toString());
                     getToken();
                 } else {
                     error("'}'");
@@ -475,31 +535,36 @@ public class Sintatico {
         }
     }
 
+    // private void CondWhile(){
+
+    // }
+
     private void While() {
         if (token.category.equals(TokensEnum.PR_WHILE)) {
-            result("While", "'while' '(' Eb ')' '{' Instructions '}'");
+            result("While", "'while' '(' Ec ')' '{' Instructions '}'");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             if (token.category.equals(TokensEnum.OP_PAR)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
-                Eb();
+                Ec();
+                // MultAtr();
 
                 if (token.category.equals(TokensEnum.CL_PAR)) {
-                    System.out.println(token.toString());
+                    TokensFile.write(token.toString());
                     getToken();
 
                     if (token.category.equals(TokensEnum.OP_CHAVES)) {
-                        System.out.println(token.toString());
+                        TokensFile.write(token.toString());
                         getToken();
 
                         Instructions();
 
                         if (token.category.equals(TokensEnum.CL_CHAVES)) {
-                            System.out.println(token.toString());
+                            TokensFile.write(token.toString());
                             getToken();
 
                         } else {
@@ -522,11 +587,11 @@ public class Sintatico {
     private void For() {
         result("For", "'for' '('Start Stop Increment')' '{' Instructions '}'");
 
-        System.out.println(token.toString());
+        TokensFile.write(token.toString());
         getToken();
 
         if (token.category.equals(TokensEnum.OP_PAR)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             Start();
@@ -536,17 +601,17 @@ public class Sintatico {
             Increment();
 
             if (token.category.equals(TokensEnum.CL_PAR)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
                 if (token.category.equals(TokensEnum.OP_CHAVES)) {
-                    System.out.println(token.toString());
+                    TokensFile.write(token.toString());
                     getToken();
 
                     Instructions();
 
                     if (token.category.equals(TokensEnum.CL_CHAVES)) {
-                        System.out.println(token.toString());
+                        TokensFile.write(token.toString());
                         getToken();
 
                     } else {
@@ -567,11 +632,11 @@ public class Sintatico {
         result("Start", " ID  '=' Ec");
 
         if (token.category.equals(TokensEnum.ID)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             if (token.category.equals(TokensEnum.OPR_IGUAL)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
                 Ec();
@@ -587,7 +652,7 @@ public class Sintatico {
         result("Stop", "',' Ec");
 
         if (token.category.equals(TokensEnum.S_VIRG)) {
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             Ec();
@@ -599,12 +664,12 @@ public class Sintatico {
     private void Increment() {
         if (token.category.equals(TokensEnum.S_VIRG)) {
             result("Increment", "',' CT_INT");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             if (token.category.equals(TokensEnum.CT_INT)) {
 
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
             } else {
                 error("CT_INT");
@@ -629,20 +694,20 @@ public class Sintatico {
     private void SysIn() {
         if (token.category.equals(TokensEnum.PR_SYSIN)) {
             result("SysIn", "'SysIn' '(' ParamIn ')' ';'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             if (token.category.equals(TokensEnum.OP_PAR)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
                 ParamIn();
 
                 if (token.category.equals(TokensEnum.CL_PAR)) {
-                    System.out.println(token.toString());
+                    TokensFile.write(token.toString());
                     getToken();
 
                     if (token.category.equals(TokensEnum.S_PVIRG)) {
-                        System.out.println(token.toString());
+                        TokensFile.write(token.toString());
                         getToken();
                     } else {
                         error("';'");
@@ -662,10 +727,25 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.ID)) {
             result("ParamIn", " ID MultParamIn");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
-            MultParamIn();
+            if (token.category.equals(TokensEnum.OP_COLC)) {
+                result("MultAtr", "'[' Ea ']'");
+                TokensFile.write(token.toString());
+                getToken();
+
+                Ea();
+
+                if (token.category.equals(TokensEnum.CL_COLC)) {
+                    TokensFile.write(token.toString());
+                    getToken();
+                } else {
+                    error("']'");
+                }
+
+                MultParamIn();
+            }
         } else {
             error("'ID'");
         }
@@ -674,7 +754,7 @@ public class Sintatico {
     private void MultParamIn() {
         if (token.category.equals(TokensEnum.S_PVIRG)) {
             result("MultParamIn", "',' ParamIn");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             ParamIn();
@@ -687,21 +767,21 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.PR_SYSOUT)) {
             result("SysOut", "'SysOut' '(' ParamOut ')' ';'");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             if (token.category.equals(TokensEnum.OP_PAR)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
                 ParamOut();
 
                 if (token.category.equals(TokensEnum.CL_PAR)) {
-                    System.out.println(token.toString());
+                    TokensFile.write(token.toString());
                     getToken();
 
                     if (token.category.equals(TokensEnum.S_PVIRG)) {
-                        System.out.println(token.toString());
+                        TokensFile.write(token.toString());
                         getToken();
                     } else {
                         error("';'");
@@ -720,14 +800,30 @@ public class Sintatico {
     private void ParamOut() {
         if (token.category.equals(TokensEnum.CT_STRING)) {
             result("ParamOut", " '\"' CT_STRING '\"' MultParamOut ");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             MultParamOut();
         } else if (token.category.equals(TokensEnum.ID)) {
             result("ParamOut", " ID MultParamOut ");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
+
+            if(token.category.equals(TokensEnum.OP_COLC)) {
+                result("MultParamOut", "'[' Ea ']'");
+                TokensFile.write(token.toString());
+                getToken();
+    
+                Ea();
+    
+                if(token.category.equals(TokensEnum.CL_COLC)){
+                    TokensFile.write(token.toString());
+                    getToken();
+                } else {
+                    error("']'");
+                }
+    
+            }
 
             MultParamOut();
         } else {
@@ -738,7 +834,7 @@ public class Sintatico {
     private void MultParamOut() {
         if (token.category.equals(TokensEnum.OPR_ADD)) {
             result("MultParamOut", "'+' ParamOut ");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             ParamOut();
@@ -751,7 +847,7 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.PR_RETURN)) {
             result("Return", "'return' ParamReturn");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             ParamReturn();
@@ -764,7 +860,7 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.S_PVIRG)) {
             result("ParamReturn", "';'");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else {
             result("ParamReturn", "Ec ';'");
@@ -772,26 +868,11 @@ public class Sintatico {
             Ec();
 
             if (token.category.equals(TokensEnum.S_PVIRG)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
             } else {
                 error("';'");
             }
-        }
-    }
-
-    private void AtrId() {
-        if (token.category.equals(TokensEnum.OP_PAR)) {
-            result("AtrId", "ID FunctionCall");
-            
-            FunctionCall();
-        } else {
-            result("AtrId", "ID Atr");
-
-            System.out.println(token.toString());
-            getToken();
-
-            Atr();
         }
     }
 
@@ -800,19 +881,28 @@ public class Sintatico {
             result("IdFunCall", "FunctionCall");
 
             FunctionCall();
-        } /* else {
-            result("IdFunCall", "ID");
-            System.out.println("Entrei aq na IDFUNCALL COM O TOKEN: " + token.lexical);
-            System.out.println(token.toString());
+        } else if(token.category.equals(TokensEnum.OP_COLC)) {
+            result("IdFunCall", "'[' Ea ']' IdFunCall");
+            TokensFile.write(token.toString());
             getToken();
-        } */
+
+            Ea();
+
+            if(token.category.equals(TokensEnum.CL_COLC)){
+                TokensFile.write(token.toString());
+                getToken();
+            } else {
+                error("']'");
+            }
+
+        }
     }
 
     private void FunctionCall() {
         if (token.category.equals(TokensEnum.OP_PAR)) {
             result("FunctionCall", "'(' ParamFunctionCall");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             ParamFunctionCall();
@@ -825,11 +915,11 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.CL_PAR)) {
             result("ParamFunctionCall", "')' ';'");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             if (token.category.equals(TokensEnum.S_PVIRG)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
             } else {
                 error("';'");
@@ -840,11 +930,11 @@ public class Sintatico {
             ParamFunction();
 
             if (token.category.equals(TokensEnum.CL_PAR)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
 
                 if (token.category.equals(TokensEnum.S_PVIRG)) {
-                    System.out.println(token.toString());
+                    TokensFile.write(token.toString());
                     getToken();
                 } else {
                     error("';'");
@@ -866,7 +956,7 @@ public class Sintatico {
         if (token.category.equals(TokensEnum.S_VIRG)) {
             result("MultParamFunction", "',' ParamFunction");
 
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
 
             ParamFunction();
@@ -902,30 +992,30 @@ public class Sintatico {
     private void Type() {
         if (token.category.equals(TokensEnum.PR_VOID)) {
             result("Type", "'void'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         }else if (token.category.equals(TokensEnum.PR_INT)) {
             result("Type", "'int'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else if (token.category.equals(TokensEnum.PR_FLOAT)) {
             result("Type", "'float'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else if (token.category.equals(TokensEnum.PR_CHAR)) {
             result("Type", "'char'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else if (token.category.equals(TokensEnum.PR_STRING)) {
             result("Type", "'string'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else if (token.category.equals(TokensEnum.PR_BOOL)) {
             result("Type", "'bool'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else {
-            System.out.println("Type");
+            TokensFile.write("Type");
             error("'int', 'float', 'char', 'string', 'bool', 'void'");
         }
     }
@@ -989,7 +1079,7 @@ public class Sintatico {
     private void EcLL() {
         if (token.category.equals(TokensEnum.OPR_CONC)) {
             result("EcLL", "'OPR_CONC' Eb EcLL");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             Eb();
             EcLL();
@@ -1005,7 +1095,7 @@ public class Sintatico {
             } else if (token.category.equals(TokensEnum.OPR_AND)) {
                 result("EbLL", "'OPR_AND' Tb EbLL");
             }
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             Tb();
             EbLL();
@@ -1023,7 +1113,7 @@ public class Sintatico {
     private void TbLL() {
         if (token.category.equals(TokensEnum.OPR_NOT)) {
             result("TbLL", "'OPR_NOT' Ra TbLL");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             Ra();
             TbLL();
@@ -1042,7 +1132,7 @@ public class Sintatico {
         if (isEqualityOPR()) {
             result("RaLL", "Rel Rb RaLL");
             Equality();
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             Rb();
             RaLL();
@@ -1061,7 +1151,7 @@ public class Sintatico {
         if (isComparationOPR()) {
             result("RbLL", "Comparation Ea RbLL");
             Comparation();
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             Ea();
             RbLL();
@@ -1084,7 +1174,7 @@ public class Sintatico {
             } else if (token.category.equals(TokensEnum.OPR_SUB)) {
                 result("EaLL", "'OPR_SUB' Ta EaLL");
             }
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             Ta();
             EaLL();
@@ -1109,7 +1199,7 @@ public class Sintatico {
             } else if (token.category.equals(TokensEnum.OPR_MOD)) {
                 result("TaLL", "'OPR_MOD' Fa TaLL");
             }
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             Fa();
             TaLL();
@@ -1121,54 +1211,54 @@ public class Sintatico {
     private void Fa() {
         if (token.category.equals(TokensEnum.OP_PAR)) {
             result("Fa", "'(' Ec ')'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             Ec();
             if (token.category.equals(TokensEnum.CL_PAR)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
             } else {
                 error("')'");
             }
         } else if (token.category.equals(TokensEnum.ID)) {
             result("Fa", "'ID' IdFunCall");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             IdFunCall();
         } else if (token.category.equals(TokensEnum.CT_INT)) {
             result("Fa", "'CT_INT'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else if (token.category.equals(TokensEnum.CT_FLOAT)) {
             result("Fa", "'CT_FLOAT'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else if (token.category.equals(TokensEnum.PR_TRUE)) {
             result("Fa", "'PR_TRUE'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else if (token.category.equals(TokensEnum.PR_FALSE)) {
             result("Fa", "'PR_FALSE'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else if (token.category.equals(TokensEnum.PR_BOOL)) {
             result("Fa", "'PR_BOOL'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         }else if (token.category.equals(TokensEnum.CT_CHAR)) {
             result("Fa", "'CT_CHAR'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else if (token.category.equals(TokensEnum.CT_STRING)) {
             result("Fa", "'CT_STRING'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
         } else if (token.category.equals(TokensEnum.OPR_INVERS)) {
             result("Fa", "'OPR_INVERS' 'ID'");
-            System.out.println(token.toString());
+            TokensFile.write(token.toString());
             getToken();
             if (token.category.equals(TokensEnum.ID)) {
-                System.out.println(token.toString());
+                TokensFile.write(token.toString());
                 getToken();
             } else {
                 error("'ID'");
@@ -1180,11 +1270,11 @@ public class Sintatico {
 
     private void result(String left, String right) {
         String format = "%10s%s = %s";
-        System.out.println(String.format((format) + "%n", "", left, right));
+        TokensFile.write(String.format((format) + "%n", "", left, right));
     }
 
     private void error(String expectation) {
-        System.out.println("Error "+ lexico.getPosition() +": Expected " + expectation + " but received '" + token.lexical + "'");
+        TokensFile.write("Error "+ lexico.getPosition() +": Expected " + expectation + " but received '" + token.lexical + "'");
         System.exit(1);
     }
 }

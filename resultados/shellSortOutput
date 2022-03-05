@@ -1,0 +1,844 @@
+          S = 'function' DcFunction S
+              [0001,0001] (0007,               PR_FN) {function}
+          DcFunction = Type ID FunctionHeader
+          Type = 'void'
+              [0001,0010] (0009,             PR_VOID) {void}
+              [0001,0015] (0001,                  ID) {_shellSort}
+          FunctionHeader = '(' Param ')' '{' Instructions '}'
+              [0001,0025] (0047,              OP_PAR) {(}
+          Param = DcParamArray
+              [0001,0026] (0024,            PR_ARRAY) {array}
+          DcParamArray = 'array' Type ID  '[' ']' MultDcParam
+          Type = 'int'
+              [0001,0032] (0010,              PR_INT) {int}
+              [0001,0036] (0001,                  ID) {_nums}
+              [0001,0041] (0049,             OP_COLC) {[}
+              [0001,0042] (0050,             CL_COLC) {]}
+              [0001,0043] (0051,              S_VIRG) {,}
+          MultDcParam = ',' DcParam
+          DcParam = Type ID MultDcParam
+          Type = 'int'
+              [0001,0045] (0010,              PR_INT) {int}
+              [0001,0049] (0001,                  ID) {_numsSize}
+MultDcParam          MultDcParam = Epsilon
+              [0001,0049] (0001,                  ID) {_numsSize}
+              [0001,0058] (0048,              CL_PAR) {)}
+              [0001,0060] (0045,           OP_CHAVES) {{}
+          Instructions = DcVar Instructions
+          DcVar = Type DcVarAtr ';'
+          Type = 'int'
+              [0002,0005] (0010,              PR_INT) {int}
+          DcVarAtr = ID Atr MultAtr
+              [0002,0009] (0001,                  ID) {_h}
+          Atr = '=' Ec MultAtr
+              [0002,0012] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'CT_INT'
+              [0002,0013] (0002,              CT_INT) {1}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultAtr = Epsilon
+          MultAtr = Epsilon
+              [0002,0014] (0052,             S_PVIRG) {;}
+          Instructions = Command Instructions
+          Command = while
+          While = 'while' '(' Ec ')' '{' Instructions '}'
+              [0004,0005] (0020,            PR_WHILE) {while}
+              [0004,0011] (0047,              OP_PAR) {(}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0004,0012] (0001,                  ID) {_h}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Comparation Ea RbLL
+          Comparation = 'OPR_MENOR'
+              [0004,0015] (0037,           OPR_MENOR) {<}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0004,0016] (0001,                  ID) {_numsSize}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+              [0004,0025] (0048,              CL_PAR) {)}
+              [0004,0027] (0045,           OP_CHAVES) {{}
+          Instructions = ID AtrId Instructions
+              [0005,0009] (0001,                  ID) {_h}
+          AtrId = Atr
+          Atr = '=' Ec MultAtr
+              [0005,0012] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0005,0013] (0001,                  ID) {_h}
+          TaLL = 'OPR_MULT' Fa TaLL
+              [0005,0016] (0030,            OPR_MULT) {*}
+          Fa = 'CT_INT'
+              [0005,0018] (0002,              CT_INT) {3}
+          TaLL = Epsilon
+          EaLL = 'OPR_ADD' Ta EaLL
+              [0005,0020] (0028,             OPR_ADD) {+}
+          Ta = Fa TaLL
+          Fa = 'CT_INT'
+              [0005,0022] (0002,              CT_INT) {1}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultAtr = Epsilon
+              [0005,0023] (0052,             S_PVIRG) {;}
+          Instructions = Epsilon
+              [0006,0005] (0046,           CL_CHAVES) {}}
+          Instructions = ID AtrId Instructions
+              [0008,0005] (0001,                  ID) {_h}
+          AtrId = Atr
+          Atr = '=' Ec MultAtr
+              [0008,0008] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0008,0009] (0001,                  ID) {_h}
+          TaLL = 'OPR_DIV' Fa TaLL
+              [0008,0012] (0031,             OPR_DIV) {/}
+          Fa = 'CT_INT'
+              [0008,0014] (0002,              CT_INT) {3}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultAtr = Epsilon
+              [0008,0015] (0052,             S_PVIRG) {;}
+          Instructions = DcVar Instructions
+          DcVar = Type DcVarAtr ';'
+          Type = 'int'
+              [0009,0005] (0010,              PR_INT) {int}
+          DcVarAtr = ID Atr MultAtr
+              [0009,0009] (0001,                  ID) {_c}
+          Atr = Epsilon
+          MultAtr = ',' DcVarAtr
+              [0009,0011] (0051,              S_VIRG) {,}
+          DcVarAtr = ID Atr MultAtr
+              [0009,0013] (0001,                  ID) {_j}
+          Atr = Epsilon
+          MultAtr = ',' DcVarAtr
+              [0009,0015] (0051,              S_VIRG) {,}
+          DcVarAtr = ID Atr MultAtr
+              [0009,0017] (0001,                  ID) {_i}
+          Atr = Epsilon
+          MultAtr = Epsilon
+              [0009,0019] (0052,             S_PVIRG) {;}
+          Instructions = Command Instructions
+          Command = while
+          While = 'while' '(' Ec ')' '{' Instructions '}'
+              [0011,0005] (0020,            PR_WHILE) {while}
+              [0011,0011] (0047,              OP_PAR) {(}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0011,0012] (0001,                  ID) {_h}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Comparation Ea RbLL
+          Comparation = 'OPR_MAIOR'
+              [0011,0015] (0036,           OPR_MAIOR) {>}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'CT_INT'
+              [0011,0016] (0002,              CT_INT) {0}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+              [0011,0017] (0048,              CL_PAR) {)}
+              [0011,0019] (0045,           OP_CHAVES) {{}
+          Instructions = Command Instructions
+          Command = for
+          For = 'for' '('Start Stop Increment')' '{' Instructions '}'
+              [0012,0009] (0021,              PR_FOR) {for}
+              [0012,0012] (0047,              OP_PAR) {(}
+          Start =  ID  '=' Ec
+              [0012,0013] (0001,                  ID) {_i}
+              [0012,0016] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0012,0017] (0001,                  ID) {_h}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          Stop = ',' Ec
+              [0012,0019] (0051,              S_VIRG) {,}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0012,0021] (0001,                  ID) {_numsSize}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          Increment = Epsilon
+              [0012,0030] (0048,              CL_PAR) {)}
+              [0012,0032] (0045,           OP_CHAVES) {{}
+          Instructions = ID AtrId Instructions
+              [0013,0013] (0001,                  ID) {_c}
+          AtrId = Atr
+          Atr = '=' Ec MultAtr
+              [0013,0016] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0013,0017] (0001,                  ID) {_nums}
+          IdFunCall = '[' Ea ']' IdFunCall
+              [0013,0022] (0049,             OP_COLC) {[}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0013,0023] (0001,                  ID) {_i}
+          TaLL = Epsilon
+          EaLL = Epsilon
+              [0013,0025] (0050,             CL_COLC) {]}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultAtr = Epsilon
+              [0013,0026] (0052,             S_PVIRG) {;}
+          Instructions = ID AtrId Instructions
+              [0014,0013] (0001,                  ID) {_j}
+          AtrId = Atr
+          Atr = '=' Ec MultAtr
+              [0014,0016] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0014,0017] (0001,                  ID) {_i}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultAtr = Epsilon
+              [0014,0019] (0052,             S_PVIRG) {;}
+          Instructions = Command Instructions
+          Command = while
+          While = 'while' '(' Ec ')' '{' Instructions '}'
+              [0015,0013] (0020,            PR_WHILE) {while}
+              [0015,0019] (0047,              OP_PAR) {(}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0015,0020] (0001,                  ID) {_j}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Comparation Ea RbLL
+          Comparation = 'OPR_MAIORIG'
+              [0015,0023] (0038,         OPR_MAIORIG) {>=}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0015,0025] (0001,                  ID) {_h}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = 'OPR_AND' Tb EbLL
+              [0015,0028] (0042,             OPR_AND) {and}
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0015,0032] (0001,                  ID) {_nums}
+          IdFunCall = '[' Ea ']' IdFunCall
+              [0015,0037] (0049,             OP_COLC) {[}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0015,0038] (0001,                  ID) {_j}
+          TaLL = Epsilon
+          EaLL = 'OPR_SUB' Ta EaLL
+              [0015,0041] (0029,             OPR_SUB) {-}
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0015,0043] (0001,                  ID) {_h}
+          TaLL = Epsilon
+          EaLL = Epsilon
+              [0015,0045] (0050,             CL_COLC) {]}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Comparation Ea RbLL
+          Comparation = 'OPR_MAIOR'
+              [0015,0047] (0036,           OPR_MAIOR) {>}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0015,0048] (0001,                  ID) {_c}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+              [0015,0050] (0048,              CL_PAR) {)}
+              [0015,0052] (0045,           OP_CHAVES) {{}
+          Instructions = ID AtrId Instructions
+              [0016,0017] (0001,                  ID) {_nums}
+          AtrId = Atr
+          MultAtr = '[' Ea ']' Atr
+              [0016,0022] (0049,             OP_COLC) {[}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0016,0023] (0001,                  ID) {_j}
+          TaLL = Epsilon
+          EaLL = Epsilon
+              [0016,0025] (0050,             CL_COLC) {]}
+          Atr = '=' Ec MultAtr
+              [0016,0027] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0016,0028] (0001,                  ID) {_nums}
+          IdFunCall = '[' Ea ']' IdFunCall
+              [0016,0033] (0049,             OP_COLC) {[}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0016,0034] (0001,                  ID) {_j}
+          TaLL = Epsilon
+          EaLL = 'OPR_SUB' Ta EaLL
+              [0016,0037] (0029,             OPR_SUB) {-}
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0016,0039] (0001,                  ID) {_h}
+          TaLL = Epsilon
+          EaLL = Epsilon
+              [0016,0041] (0050,             CL_COLC) {]}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultAtr = Epsilon
+              [0016,0042] (0052,             S_PVIRG) {;}
+          Instructions = ID AtrId Instructions
+              [0017,0017] (0001,                  ID) {_j}
+          AtrId = Atr
+          Atr = '=' Ec MultAtr
+              [0017,0020] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0017,0021] (0001,                  ID) {_j}
+          TaLL = Epsilon
+          EaLL = 'OPR_SUB' Ta EaLL
+              [0017,0024] (0029,             OPR_SUB) {-}
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0017,0026] (0001,                  ID) {_h}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultAtr = Epsilon
+              [0017,0028] (0052,             S_PVIRG) {;}
+          Instructions = Epsilon
+              [0018,0013] (0046,           CL_CHAVES) {}}
+          Instructions = ID AtrId Instructions
+              [0019,0013] (0001,                  ID) {_nums}
+          AtrId = Atr
+          MultAtr = '[' Ea ']' Atr
+              [0019,0018] (0049,             OP_COLC) {[}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0019,0019] (0001,                  ID) {_j}
+          TaLL = Epsilon
+          EaLL = Epsilon
+              [0019,0021] (0050,             CL_COLC) {]}
+          Atr = '=' Ec MultAtr
+              [0019,0023] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0019,0024] (0001,                  ID) {_c}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultAtr = Epsilon
+              [0019,0026] (0052,             S_PVIRG) {;}
+          Instructions = Epsilon
+              [0020,0009] (0046,           CL_CHAVES) {}}
+          Instructions = ID AtrId Instructions
+              [0021,0009] (0001,                  ID) {_h}
+          AtrId = Atr
+          Atr = '=' Ec MultAtr
+              [0021,0012] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0021,0013] (0001,                  ID) {_h}
+          TaLL = 'OPR_DIV' Fa TaLL
+              [0021,0016] (0031,             OPR_DIV) {/}
+          Fa = 'CT_INT'
+              [0021,0018] (0002,              CT_INT) {2}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultAtr = Epsilon
+              [0021,0019] (0052,             S_PVIRG) {;}
+          Instructions = Epsilon
+              [0022,0005] (0046,           CL_CHAVES) {}}
+          Instructions = Epsilon
+              [0023,0001] (0046,           CL_CHAVES) {}}
+          S = 'function' DcFunction S
+              [0025,0001] (0007,               PR_FN) {function}
+          DcFunction =  'main' FunctionHeader
+              [0025,0010] (0006,             PR_MAIN) {main}
+          FunctionHeader = '(' Param ')' '{' Instructions '}'
+              [0025,0014] (0047,              OP_PAR) {(}
+          Param = Epsilon
+              [0025,0015] (0048,              CL_PAR) {)}
+              [0025,0017] (0045,           OP_CHAVES) {{}
+          Instructions = DcVar Instructions
+          DcVar = Type DcVarAtr ';'
+          Type = 'int'
+              [0026,0005] (0010,              PR_INT) {int}
+          DcVarAtr = ID Atr MultAtr
+              [0026,0009] (0001,                  ID) {_n}
+          Atr = Epsilon
+          MultAtr = Epsilon
+              [0026,0011] (0052,             S_PVIRG) {;}
+          Instructions = InOut Instructions
+          InOut = SysOut
+          SysOut = 'SysOut' '(' ParamOut ')' ';'
+              [0028,0005] (0016,           PR_SYSOUT) {SysOut}
+              [0028,0011] (0047,              OP_PAR) {(}
+          ParamOut =  '"' CT_STRING '"' MultParamOut 
+              [0028,0012] (0004,           CT_STRING) {"Insira o tamanho do array:"}
+          MultParamOut = Epsilon
+              [0028,0040] (0048,              CL_PAR) {)}
+              [0028,0041] (0052,             S_PVIRG) {;}
+          Instructions = InOut Instructions
+          InOut = SysIn
+          SysIn = 'SysIn' '(' ParamIn ')' ';'
+              [0029,0005] (0015,            PR_SYSIN) {SysIn}
+              [0029,0010] (0047,              OP_PAR) {(}
+          ParamIn =  ID MultParamIn
+              [0029,0011] (0001,                  ID) {_n}
+              [0029,0013] (0048,              CL_PAR) {)}
+              [0029,0014] (0052,             S_PVIRG) {;}
+          Instructions = DcArr Instructions
+              [0031,0005] (0024,            PR_ARRAY) {array}
+          DcArr = 'array' Type ID '[' CT_INT | ID ']' DcArrAtr';'
+          Type = 'int'
+              [0031,0011] (0010,              PR_INT) {int}
+              [0031,0015] (0001,                  ID) {_valores}
+              [0031,0023] (0049,             OP_COLC) {[}
+              [0031,0024] (0001,                  ID) {_n}
+              [0031,0026] (0050,             CL_COLC) {]}
+          DcArrAtr = '=' '{' MultArrAtr '}'
+          DcArrAtr = Epsilon
+              [0031,0027] (0052,             S_PVIRG) {;}
+          Instructions = InOut Instructions
+          InOut = SysOut
+          SysOut = 'SysOut' '(' ParamOut ')' ';'
+              [0032,0005] (0016,           PR_SYSOUT) {SysOut}
+              [0032,0011] (0047,              OP_PAR) {(}
+          ParamOut =  '"' CT_STRING '"' MultParamOut 
+              [0032,0012] (0004,           CT_STRING) {"Insira os valores do array:"}
+          MultParamOut = Epsilon
+              [0032,0041] (0048,              CL_PAR) {)}
+              [0032,0042] (0052,             S_PVIRG) {;}
+          Instructions = DcVar Instructions
+          DcVar = Type DcVarAtr ';'
+          Type = 'int'
+              [0034,0005] (0010,              PR_INT) {int}
+          DcVarAtr = ID Atr MultAtr
+              [0034,0009] (0001,                  ID) {_i}
+          Atr = Epsilon
+          MultAtr = Epsilon
+              [0034,0011] (0052,             S_PVIRG) {;}
+          Instructions = Command Instructions
+          Command = for
+          For = 'for' '('Start Stop Increment')' '{' Instructions '}'
+              [0035,0005] (0021,              PR_FOR) {for}
+              [0035,0008] (0047,              OP_PAR) {(}
+          Start =  ID  '=' Ec
+              [0035,0009] (0001,                  ID) {_i}
+              [0035,0012] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'CT_INT'
+              [0035,0013] (0002,              CT_INT) {0}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          Stop = ',' Ec
+              [0035,0014] (0051,              S_VIRG) {,}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0035,0016] (0001,                  ID) {_n}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          Increment = Epsilon
+              [0035,0018] (0048,              CL_PAR) {)}
+              [0035,0020] (0045,           OP_CHAVES) {{}
+          Instructions = InOut Instructions
+          InOut = SysIn
+          SysIn = 'SysIn' '(' ParamIn ')' ';'
+              [0036,0009] (0015,            PR_SYSIN) {SysIn}
+              [0036,0014] (0047,              OP_PAR) {(}
+          ParamIn =  ID MultParamIn
+              [0036,0015] (0001,                  ID) {_valores}
+          MultAtr = '[' Ea ']'
+              [0036,0023] (0049,             OP_COLC) {[}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0036,0024] (0001,                  ID) {_i}
+          TaLL = Epsilon
+          EaLL = Epsilon
+              [0036,0026] (0050,             CL_COLC) {]}
+          MultParamIn = Epsilon
+              [0036,0027] (0048,              CL_PAR) {)}
+              [0036,0028] (0052,             S_PVIRG) {;}
+          Instructions = Epsilon
+              [0037,0005] (0046,           CL_CHAVES) {}}
+          Instructions = InOut Instructions
+          InOut = SysOut
+          SysOut = 'SysOut' '(' ParamOut ')' ';'
+              [0039,0005] (0016,           PR_SYSOUT) {SysOut}
+              [0039,0011] (0047,              OP_PAR) {(}
+          ParamOut =  '"' CT_STRING '"' MultParamOut 
+              [0039,0012] (0004,           CT_STRING) {"Array antes de organizar:"}
+          MultParamOut = Epsilon
+              [0039,0039] (0048,              CL_PAR) {)}
+              [0039,0040] (0052,             S_PVIRG) {;}
+          Instructions = Command Instructions
+          Command = for
+          For = 'for' '('Start Stop Increment')' '{' Instructions '}'
+              [0040,0005] (0021,              PR_FOR) {for}
+              [0040,0009] (0047,              OP_PAR) {(}
+          Start =  ID  '=' Ec
+              [0040,0010] (0001,                  ID) {_i}
+              [0040,0013] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'CT_INT'
+              [0040,0014] (0002,              CT_INT) {0}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          Stop = ',' Ec
+              [0040,0015] (0051,              S_VIRG) {,}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0040,0017] (0001,                  ID) {_n}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          Increment = Epsilon
+              [0040,0019] (0048,              CL_PAR) {)}
+              [0040,0021] (0045,           OP_CHAVES) {{}
+          Instructions = InOut Instructions
+          InOut = SysOut
+          SysOut = 'SysOut' '(' ParamOut ')' ';'
+              [0041,0009] (0016,           PR_SYSOUT) {SysOut}
+              [0041,0015] (0047,              OP_PAR) {(}
+          ParamOut =  ID MultParamOut 
+              [0041,0016] (0001,                  ID) {_valores}
+          MultParamOut = '[' Ea ']'
+              [0041,0024] (0049,             OP_COLC) {[}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0041,0025] (0001,                  ID) {_i}
+          TaLL = Epsilon
+          EaLL = Epsilon
+              [0041,0027] (0050,             CL_COLC) {]}
+          MultParamOut = Epsilon
+              [0041,0028] (0048,              CL_PAR) {)}
+              [0041,0029] (0052,             S_PVIRG) {;}
+          Instructions = Epsilon
+              [0042,0005] (0046,           CL_CHAVES) {}}
+          Instructions = ID AtrId Instructions
+              [0044,0005] (0001,                  ID) {_shellSort}
+          AtrId = FunctionCall
+          FunctionCall = '(' ParamFunctionCall
+              [0044,0015] (0047,              OP_PAR) {(}
+          ParamFunctionCall = ParamFunction ')' ';'
+          ParamFunction = Ec MultParamFunction
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0044,0016] (0001,                  ID) {_valores}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultParamFunction = ',' ParamFunction
+              [0044,0024] (0051,              S_VIRG) {,}
+          ParamFunction = Ec MultParamFunction
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0044,0026] (0001,                  ID) {_n}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          MultParamFunction = Epsilon
+              [0044,0028] (0048,              CL_PAR) {)}
+              [0044,0029] (0052,             S_PVIRG) {;}
+          Instructions = InOut Instructions
+          InOut = SysOut
+          SysOut = 'SysOut' '(' ParamOut ')' ';'
+              [0046,0005] (0016,           PR_SYSOUT) {SysOut}
+              [0046,0011] (0047,              OP_PAR) {(}
+          ParamOut =  '"' CT_STRING '"' MultParamOut 
+              [0046,0012] (0004,           CT_STRING) {"Array depois de organizar:"}
+          MultParamOut = Epsilon
+              [0046,0040] (0048,              CL_PAR) {)}
+              [0046,0041] (0052,             S_PVIRG) {;}
+          Instructions = Command Instructions
+          Command = for
+          For = 'for' '('Start Stop Increment')' '{' Instructions '}'
+              [0047,0005] (0021,              PR_FOR) {for}
+              [0047,0009] (0047,              OP_PAR) {(}
+          Start =  ID  '=' Ec
+              [0047,0010] (0001,                  ID) {_i}
+              [0047,0013] (0033,           OPR_IGUAL) {=}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'CT_INT'
+              [0047,0014] (0002,              CT_INT) {0}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          Stop = ',' Ec
+              [0047,0015] (0051,              S_VIRG) {,}
+          Ec = Eb EcLL
+          Eb = Tb EbLL
+          Tb = Ra TbLL
+          Ra = Rb RaLL
+          Rb = Ea RbLL
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0047,0017] (0001,                  ID) {_n}
+          TaLL = Epsilon
+          EaLL = Epsilon
+          RbLL = Epsilon
+          RaLL = Epsilon
+          TbLL = Epsilon
+          EbLL = Epsilon
+          EcLL = Epsilon
+          Increment = Epsilon
+              [0047,0019] (0048,              CL_PAR) {)}
+              [0047,0021] (0045,           OP_CHAVES) {{}
+          Instructions = InOut Instructions
+          InOut = SysOut
+          SysOut = 'SysOut' '(' ParamOut ')' ';'
+              [0048,0009] (0016,           PR_SYSOUT) {SysOut}
+              [0048,0015] (0047,              OP_PAR) {(}
+          ParamOut =  ID MultParamOut 
+              [0048,0016] (0001,                  ID) {_valores}
+          MultParamOut = '[' Ea ']'
+              [0048,0024] (0049,             OP_COLC) {[}
+          Ea = Ta EaLL
+          Ta = Fa TaLL
+          Fa = 'ID' IdFunCall
+              [0048,0025] (0001,                  ID) {_i}
+          TaLL = Epsilon
+          EaLL = Epsilon
+              [0048,0027] (0050,             CL_COLC) {]}
+          MultParamOut = Epsilon
+              [0048,0028] (0048,              CL_PAR) {)}
+              [0048,0029] (0052,             S_PVIRG) {;}
+          Instructions = Epsilon
+              [0049,0005] (0046,           CL_CHAVES) {}}
+          Instructions = Epsilon
+              [0050,0001] (0046,           CL_CHAVES) {}}
